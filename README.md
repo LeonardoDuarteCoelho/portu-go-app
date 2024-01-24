@@ -1,4 +1,4 @@
-# portu_go_driver
+# PortuGO Driver
 
 Project containing files for a fictional service named "PortuGO", which offers urban transportation for users all accross Portugal.
 

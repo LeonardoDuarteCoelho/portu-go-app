@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:portu_go_driver/splashScreen/splash_screen.dart';
 
 /// CHANGELOG:
 ///
@@ -21,7 +22,7 @@ void main() async {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: Scaffold(appBar: AppBar(title: Text('PortuGO Driver'),),),
+        home: const MySplashScreen(),
         debugShowCheckedModeBanner: false,
       )
     ),
