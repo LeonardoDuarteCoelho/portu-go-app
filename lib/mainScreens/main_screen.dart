@@ -27,7 +27,6 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
   // ('main_screen.dart'):
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     tabController = TabController(length: numberOfPages, vsync: this);
   }

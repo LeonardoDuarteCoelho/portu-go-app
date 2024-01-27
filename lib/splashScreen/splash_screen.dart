@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:portu_go_driver/authenticationScreens/signup_screen.dart';
 import 'package:portu_go_driver/constants.dart';
 import 'package:portu_go_driver/mainScreens/main_screen.dart';
 
@@ -12,17 +13,18 @@ class MySplashScreen extends StatefulWidget {
 }
 
 class _MySplashScreenState extends State<MySplashScreen> {
+  static const int splashScreenTimer = 3;
+
   startTimer() {
-    Timer(const Duration(seconds: 13), () async {
+    Timer(const Duration(seconds: splashScreenTimer), () async {
       // Sending the user to the main screen:
-      Navigator.push(context, MaterialPageRoute(builder: (c) => MainScreen()));
+      Navigator.push(context, MaterialPageRoute(builder: (c) => const SignUpScreen()));
     });
   }
 
   // 'initState()' will be called whenever we go to any page of the app.
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     startTimer();
   }

@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
 
 class AppStrings {
-  // 'splash_screen.dart'
-  static const String welcomeMessage = 'Bem-vindo à PortuGO';
+  // 'splash_screen.dart' and 'signup_screen.dart'
+  static const String welcomeMessage = 'Bem-vindo à PortuGO!';
+  static const String signingUpAsDriverMessage = 'Cadastre como motorista inserindo os seus dados abaixo.';
+  static const String nameTextField = 'Nome';
+  static const String emailTextField = 'Email';
+  static const String phoneTextField = 'Nº do telemóvel';
+  static const String passwordTextField = 'Palavra-passe';
+  static const String submitButton = 'Enviar dados';
+
   // --------------------------------------------------------
 
   // 'home_screen.dart'
@@ -65,24 +72,36 @@ class AppFontSizes {
   static const double s   = 12;
 }
 
+class AppFontWeights {
+  static const black     = FontWeight.w900;
+  static const semiBlack = FontWeight.w800;
+  static const bold      = FontWeight.w700;
+  static const semiBold  = FontWeight.w600;
+  static const medium    = FontWeight.w500;
+  static const regular   = FontWeight.w400;
+  static const light     = FontWeight.w300;
+  static const semiLight = FontWeight.w200;
+  static const thin      = FontWeight.w100;
+}
+
 class AppLineHeights {
-  static const double xxl = 44;
-  static const double xl  = 36;
-  static const double l   = 28;
-  static const double ml  = 24;
-  static const double m   = 20;
-  static const double sm  = 18;
-  static const double s   = 16;
+  static const double xxl = 1.8;
+  static const double xl  = 1.6;
+  static const double l   = 1.4;
+  static const double ml  = 1.2;
+  static const double m   = 1.0;
+  static const double sm  = 0.9;
+  static const double s   = 0.8;
 }
 
 class AppSpaceValues {
-  static const space1 = 5;
-  static const space2 = 10;
-  static const space3 = 20;
-  static const space4 = 30;
-  static const space5 = 40;
-  static const space6 = 50;
-  static const space7 = 60;
-  static const space8 = 70;
-  static const space9 = 80;
+  static const double space1 = 5;
+  static const double space2 = 10;
+  static const double space3 = 20;
+  static const double space4 = 30;
+  static const double space5 = 40;
+  static const double space6 = 50;
+  static const double space7 = 60;
+  static const double space8 = 70;
+  static const double space9 = 80;
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:portu_go_driver/constants.dart';
 import 'package:portu_go_driver/splashScreen/splash_screen.dart';
 
 /// CHANGELOG:
@@ -19,7 +20,7 @@ void main() async {
       child: MaterialApp(
         title: 'PortuGO Driver',
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          colorScheme: ColorScheme.fromSeed(seedColor: AppColors.indigo7),
           useMaterial3: true,
         ),
         home: const MySplashScreen(),
