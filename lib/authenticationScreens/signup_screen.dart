@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:portu_go_driver/authenticationScreens/car_info_screen.dart';
 import 'package:portu_go_driver/components/button.dart';
 import 'package:portu_go_driver/constants.dart';
 import 'package:portu_go_driver/components/text_input.dart';
@@ -26,13 +27,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
         child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-
-              Image.asset('images/pexels-peter-fazekas-1386649.jpg'),
+              Image.asset('images/pexels-hassan-ouajbir-804128.jpg'),
               Padding(
                   padding: const EdgeInsets.all(AppSpaceValues.space3),
                   child: Column(
                     children: [
-                      const SizedBox(height: AppSpaceValues.space2),
+                      const SizedBox(height: AppSpaceValues.space1),
 
                       const Text(
                         AppStrings.welcomeMessage,
@@ -46,14 +46,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                       ),
 
-                      const SizedBox(height: AppSpaceValues.space2),
+                      const SizedBox(height: AppSpaceValues.space3),
 
                       const Text(
                         AppStrings.signingUpAsDriverMessage,
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontFamily: AppFontFamilies.primaryFont,
-                          fontSize: AppFontSizes.l,
+                          fontSize: AppFontSizes.ml,
                           fontWeight: AppFontWeights.regular,
                           color: AppColors.gray9,
                           height: AppLineHeights.m,
@@ -91,12 +91,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         obscureText: true,
                       ),
 
-                      const SizedBox(height: AppSpaceValues.space4),
+                      const SizedBox(height: AppSpaceValues.space5),
 
                       CustomButton(
-                          text: AppStrings.submitButton,
+                          text: AppStrings.submitDataButton,
                           onPressed: () {
-                            // TODO: Send the driver's data to database.
+                            Navigator.push(context, MaterialPageRoute(builder: (c) => const CarInfoScreen()));
                           }
                       ),
                     ],

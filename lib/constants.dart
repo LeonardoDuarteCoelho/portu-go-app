@@ -8,44 +8,49 @@ class AppStrings {
   static const String emailTextField = 'Email';
   static const String phoneTextField = 'Nº do telemóvel';
   static const String passwordTextField = 'Palavra-passe';
-  static const String submitButton = 'Enviar dados';
+  static const String submitDataButton = 'Enviar dados';
 
-  // --------------------------------------------------------
+  // 'car_info_screen.dart'
+  static const String greetingsUserMessage = 'Quase lá!';
+  static const String insertCarInfoMessage = 'Sua conta está quase pronta! Basta inserir as informações do seu carro.';
+  static const String carModelTextField = 'Modelo';
+  static const String carNumberTextField = 'Nº da placa';
+  static const String carColorTextField = 'Cor';
+  static const String carTypeDropdownHint = 'Escolha o tipo de veículo';
+  static const String carPrimeExplanation = 'Carros SUV ou minivans. Mínimo de 5 assentos disponíveis e espaço para malas.';
+  static const String carGoExplanation = 'Carros comuns. Mínimo de 3 assentos disponíveis (porta-malas não é obrigatório).';
+  static const String createAccountButton = 'Criar conta';
 
   // 'home_screen.dart'
   static const String homeScreenTitle = 'Home';
-  // --------------------------------------------------------
 
   // 'ratings_screen.dart'
   static const String ratingsScreenTitle = 'Avaliações';
-  // --------------------------------------------------------
 
   // 'earnings_screen.dart'
   static const String earningsScreenTitle = 'Renda';
-  // --------------------------------------------------------
 
   // 'profile_screen.dart'
   static const String profileScreenTitle = 'Perfil';
-  // --------------------------------------------------------
 }
 
 class AppColors {
   // Essential colors:
-  static const Color black       = Color(0xFF000000);
-  static const Color white       = Color(0xFFFFFFFF);
+  static const Color black = Color(0xFF000000);
+  static const Color white = Color(0xFFFFFFFF);
   static const Color transparent = Color(0x00000000);
 
   // Themed colors:
-  static const Color gray0   = Color(0xFFF8F9FA);
-  static const Color gray1   = Color(0xFFF1F3F5);
-  static const Color gray2   = Color(0xFFE9ECEF);
-  static const Color gray3   = Color(0xFFDEE2E6);
-  static const Color gray4   = Color(0xFFCED4DA);
-  static const Color gray5   = Color(0xFFADB5BD);
-  static const Color gray6   = Color(0xFF868E96);
-  static const Color gray7   = Color(0xFF495057);
-  static const Color gray8   = Color(0xFF343A40);
-  static const Color gray9   = Color(0xFF212529);
+  static const Color gray0 = Color(0xFFF8F9FA);
+  static const Color gray1 = Color(0xFFF1F3F5);
+  static const Color gray2 = Color(0xFFE9ECEF);
+  static const Color gray3 = Color(0xFFDEE2E6);
+  static const Color gray4 = Color(0xFFCED4DA);
+  static const Color gray5 = Color(0xFFADB5BD);
+  static const Color gray6 = Color(0xFF868E96);
+  static const Color gray7 = Color(0xFF495057);
+  static const Color gray8 = Color(0xFF343A40);
+  static const Color gray9 = Color(0xFF212529);
   static const Color indigo0 = Color(0xFFEDF2FF);
   static const Color indigo1 = Color(0xFFDBE4FF);
   static const Color indigo2 = Color(0xFFBAC8FF);
@@ -64,34 +69,34 @@ class AppFontFamilies {
 
 class AppFontSizes {
   static const double xxl = 40;
-  static const double xl  = 32;
-  static const double l   = 24;
-  static const double ml  = 20;
-  static const double m   = 16;
-  static const double sm  = 14;
-  static const double s   = 12;
+  static const double xl = 32;
+  static const double l = 24;
+  static const double ml = 20;
+  static const double m = 16;
+  static const double sm = 14;
+  static const double s = 12;
 }
 
 class AppFontWeights {
-  static const black     = FontWeight.w900;
+  static const black = FontWeight.w900;
   static const semiBlack = FontWeight.w800;
-  static const bold      = FontWeight.w700;
-  static const semiBold  = FontWeight.w600;
-  static const medium    = FontWeight.w500;
-  static const regular   = FontWeight.w400;
-  static const light     = FontWeight.w300;
+  static const bold = FontWeight.w700;
+  static const semiBold = FontWeight.w600;
+  static const medium = FontWeight.w500;
+  static const regular = FontWeight.w400;
+  static const light = FontWeight.w300;
   static const semiLight = FontWeight.w200;
-  static const thin      = FontWeight.w100;
+  static const thin = FontWeight.w100;
 }
 
 class AppLineHeights {
   static const double xxl = 1.8;
-  static const double xl  = 1.6;
-  static const double l   = 1.4;
-  static const double ml  = 1.2;
-  static const double m   = 1.0;
-  static const double sm  = 0.9;
-  static const double s   = 0.8;
+  static const double xl = 1.6;
+  static const double l = 1.4;
+  static const double ml = 1.2;
+  static const double m = 1.0;
+  static const double sm = 0.9;
+  static const double s = 0.8;
 }
 
 class AppSpaceValues {
