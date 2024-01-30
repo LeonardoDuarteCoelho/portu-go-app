@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:portu_go_driver/authenticationScreens/car_info_screen.dart';
+import 'package:portu_go_driver/authenticationScreens/login_screen.dart';
 import 'package:portu_go_driver/components/button.dart';
 import 'package:portu_go_driver/constants.dart';
 import 'package:portu_go_driver/components/text_input.dart';
@@ -13,9 +14,9 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   // 'TextEditingController' is basically what permits us to set text, via code, into text fields.
-  TextEditingController nameTextEditingController     = TextEditingController();
-  TextEditingController emailTextEditingController    = TextEditingController();
-  TextEditingController phoneTextEditingController    = TextEditingController();
+  TextEditingController nameTextEditingController = TextEditingController();
+  TextEditingController emailTextEditingController = TextEditingController();
+  TextEditingController phoneTextEditingController = TextEditingController();
   TextEditingController passwordTextEditingController = TextEditingController();
 
   @override
@@ -27,13 +28,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
         child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Image.asset('images/pexels-hassan-ouajbir-804128.jpg'),
+              Image.asset('images/pexels-tobi-620332.jpg'),
               Padding(
                   padding: const EdgeInsets.all(AppSpaceValues.space3),
                   child: Column(
                     children: [
-                      const SizedBox(height: AppSpaceValues.space1),
-
                       const Text(
                         AppStrings.welcomeMessage,
                         textAlign: TextAlign.center,
@@ -56,7 +55,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           fontSize: AppFontSizes.ml,
                           fontWeight: AppFontWeights.regular,
                           color: AppColors.gray9,
-                          height: AppLineHeights.m,
+                          height: AppLineHeights.ml,
                         ),
                       ),
 
@@ -93,12 +92,27 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                       const SizedBox(height: AppSpaceValues.space5),
 
+                      // Sign up button:
                       CustomButton(
-                          text: AppStrings.submitDataButton,
+                          text: AppStrings.createAccountButton,
                           onPressed: () {
                             Navigator.push(context, MaterialPageRoute(builder: (c) => const CarInfoScreen()));
                           }
                       ),
+
+                      const SizedBox(height: AppSpaceValues.space3),
+
+                      // Log in button:
+                      CustomButton(
+                          text: AppStrings.alreadyCreatedAccountButton,
+                          backgroundColor: AppColors.gray2,
+                          textColor: AppColors.gray9,
+                          onPressed: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (c) => const LogInScreen()));
+                          }
+                      ),
+
+                      const SizedBox(height: AppSpaceValues.space3),
                     ],
                   ),
               ),

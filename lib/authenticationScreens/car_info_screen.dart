@@ -14,9 +14,9 @@ class CarInfoScreen extends StatefulWidget {
 
 class _CarInfoScreenState extends State<CarInfoScreen> {
   // 'TextEditingController' is basically what permits us to set text, via code, into text fields.
-  TextEditingController carModelTextEditingController  = TextEditingController();
+  TextEditingController carModelTextEditingController = TextEditingController();
   TextEditingController carNumberTextEditingController = TextEditingController();
-  TextEditingController carColorTextEditingController  = TextEditingController();
+  TextEditingController carColorTextEditingController = TextEditingController();
 
   // Car types for the driver to choose:
   List<String> carTypesList = [
@@ -38,13 +38,11 @@ class _CarInfoScreenState extends State<CarInfoScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Image.asset('images/pexels-peter-fazekas-1386649.jpg'),
+            Image.asset('images/pexels-jeshootscom-13861.jpg'),
             Padding(
               padding: const EdgeInsets.all(AppSpaceValues.space3),
               child: Column(
                 children: [
-                  const SizedBox(height: AppSpaceValues.space1),
-
                   const Text(
                     AppStrings.greetingsUserMessage,
                     textAlign: TextAlign.center,
@@ -67,7 +65,7 @@ class _CarInfoScreenState extends State<CarInfoScreen> {
                       fontSize: AppFontSizes.ml,
                       fontWeight: AppFontWeights.regular,
                       color: AppColors.gray9,
-                      height: AppLineHeights.m,
+                      height: AppLineHeights.ml,
                     ),
                   ),
 
@@ -148,7 +146,7 @@ class _CarInfoScreenState extends State<CarInfoScreen> {
                       ),
                     ),
 
-                  const SizedBox(height: AppSpaceValues.space3),
+                  const SizedBox(height: AppSpaceValues.space5),
 
                   CustomButton(
                       text: AppStrings.createAccountButton,
@@ -157,6 +155,7 @@ class _CarInfoScreenState extends State<CarInfoScreen> {
                       }
                   ),
 
+                  const SizedBox(height: AppSpaceValues.space3),
                 ],
               ),
             ),

@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 
 class AppStrings {
-  // 'splash_screen.dart' and 'signup_screen.dart'
+  // 'signup_screen.dart'
   static const String welcomeMessage = 'Bem-vindo à PortuGO!';
   static const String signingUpAsDriverMessage = 'Cadastre como motorista inserindo os seus dados abaixo.';
   static const String nameTextField = 'Nome';
   static const String emailTextField = 'Email';
   static const String phoneTextField = 'Nº do telemóvel';
   static const String passwordTextField = 'Palavra-passe';
-  static const String submitDataButton = 'Enviar dados';
+
+  // 'signup_screen.dart' and 'car_info_screen.dart'
+  static const String createAccountButton = 'Criar conta';
 
   // 'car_info_screen.dart'
   static const String greetingsUserMessage = 'Quase lá!';
@@ -19,7 +21,12 @@ class AppStrings {
   static const String carTypeDropdownHint = 'Escolha o tipo de veículo';
   static const String carPrimeExplanation = 'Carros SUV ou minivans. Mínimo de 5 assentos disponíveis e espaço para malas.';
   static const String carGoExplanation = 'Carros comuns. Mínimo de 3 assentos disponíveis (porta-malas não é obrigatório).';
-  static const String createAccountButton = 'Criar conta';
+  static const String alreadyCreatedAccountButton = 'Já possuo uma conta';
+
+  // 'car_info_screen.dart'
+  static const String welcomeBackMessage = 'Olá de novo!  :)';
+  static const String logInIntoYourAccount = 'Insira seu email e palavra-passe para dar entrada na sua conta';
+  static const String enterAccountButton = 'Fazer login';
 
   // 'home_screen.dart'
   static const String homeScreenTitle = 'Home';

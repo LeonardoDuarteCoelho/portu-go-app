@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:portu_go_driver/authenticationScreens/login_screen.dart';
 import 'package:portu_go_driver/authenticationScreens/signup_screen.dart';
 import 'package:portu_go_driver/constants.dart';
 import 'package:portu_go_driver/mainScreens/main_screen.dart';
@@ -13,12 +14,13 @@ class MySplashScreen extends StatefulWidget {
 }
 
 class _MySplashScreenState extends State<MySplashScreen> {
+  // Duration of the splash screen:
   static const int splashScreenTimer = 3;
 
   startTimer() {
     Timer(const Duration(seconds: splashScreenTimer), () async {
       // Sending the user to the main screen:
-      Navigator.push(context, MaterialPageRoute(builder: (c) => const SignUpScreen()));
+      Navigator.push(context, MaterialPageRoute(builder: (c) => const LogInScreen()));
     });
   }
 
@@ -34,14 +36,13 @@ class _MySplashScreenState extends State<MySplashScreen> {
     return Material(
       child: Container(
         color: AppColors.white,
-        child: Center(
+        child: const Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
       
-              Image.asset('images/pexels-peter-fazekas-1386649.jpg'),
-              const SizedBox(height: 10),
-              const Text(
+              SizedBox(height: 10),
+              Text(
                 AppStrings.welcomeMessage,
                 style: TextStyle(
                   fontFamily: AppFontFamilies.primaryFont,
