@@ -1,4 +1,4 @@
-package com.portugo.portu_go_driver
+package app.portugo.portugodriver
 
 import io.flutter.embedding.android.FlutterActivity
 

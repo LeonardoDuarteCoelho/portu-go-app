@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:portu_go_driver/constants.dart';
 import 'package:portu_go_driver/splashScreen/splash_screen.dart';
@@ -12,9 +15,29 @@ import 'package:portu_go_driver/splashScreen/splash_screen.dart';
 ///
 /// The utilization of 'WidgetsFlutterBinding.ensureInitialized()' for instance, makes asynchronous operations
 /// before running the app (like initializing Firebase or other services) way more viable.
+///
+/// (31/01/2024)
+/// Added Firebase connection. Credentials are all located at 'google-services.json'
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Checking the host's platform (necessary for Firebase to work):
+  if (Platform.isAndroid) {
+    // Checking if the app is successfully connected to Firebase:
+    await Firebase.initializeApp(
+      options: const FirebaseOptions(
+          apiKey: 'AIzaSyDGhMovcs7Ov_nrrlefs3PhbnpQVdPvL8Y',
+          appId: '1:455303617152:android:8e3f04b5e3756f51dae465',
+          messagingSenderId: '455303617152',
+          projectId: 'portugo-c7f05'
+          // Values located in 'google-services.json'.
+      )
+    );
+  } else {
+    await Firebase.initializeApp();
+  }
+
   runApp(
     MyApp(
       child: MaterialApp(

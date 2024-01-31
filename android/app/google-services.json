@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "455303617152",
+    "firebase_url": "https://portugo-c7f05-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "portugo-c7f05",
+    "storage_bucket": "portugo-c7f05.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:455303617152:android:8e3f04b5e3756f51dae465",
+        "android_client_info": {
+          "package_name": "app.portugo.portugodriver"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDGhMovcs7Ov_nrrlefs3PhbnpQVdPvL8Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
