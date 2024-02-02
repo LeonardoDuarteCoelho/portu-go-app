@@ -1,9 +1,14 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:portu_go_driver/authenticationScreens/signup_screen.dart';
 import 'package:portu_go_driver/components/text_input.dart';
 import 'package:portu_go_driver/constants.dart';
+import 'package:portu_go_driver/global/global.dart';
+import 'package:portu_go_driver/splashScreen/splash_screen.dart';
 
 import '../components/button.dart';
+import '../components/progress_dialog.dart';
 
 class CarInfoScreen extends StatefulWidget {
   const CarInfoScreen({super.key});
@@ -18,16 +23,54 @@ class _CarInfoScreenState extends State<CarInfoScreen> {
   TextEditingController carNumberTextEditingController = TextEditingController();
   TextEditingController carColorTextEditingController = TextEditingController();
 
+  // Firebase variables:
+  late Map carInfoMap;
+  late DatabaseReference carInfoRef;
+
   // Car types for the driver to choose:
   List<String> carTypesList = [
     'Prime', // For SUVs or minivans; minimum of 6 seats and lots os space for baggage.
     'GO', // PortuGO's standard ride; 2 to 4 seats and may or may not have a trunk.
   ];
-  String? selectedCarType;
   Map<String, String> carTypeExplanations = {
     'Prime': AppStrings.carPrimeExplanation,
     'GO': AppStrings.carGoExplanation,
   };
+  String? selectedCarType;
+
+  navigateToSplashScreen() {
+    Navigator.push(context, MaterialPageRoute(builder: (c) => const SplashScreen()));
+  }
+
+  validateForm() {
+    if(carModelTextEditingController.text.isNotEmpty
+    && carNumberTextEditingController.text.isNotEmpty
+    && carColorTextEditingController.text.isNotEmpty
+    && selectedCarType != null) {
+      saveCarInfo();
+    }
+  }
+
+  saveCarInfo() {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext c) {
+          return ProgressDialog(message: AppStrings.loading);
+        }
+    );
+    carInfoMap = {
+      'carModel': carModelTextEditingController.text.trim(),
+      'carNumber': carNumberTextEditingController.text.trim(),
+      'carColor': carColorTextEditingController.text.trim(),
+      'carType': selectedCarType,
+    };
+    // Saving the car information to the database:
+    carInfoRef = FirebaseDatabase.instance.ref().child('drivers');
+    carInfoRef.child(currentFirebaseUser!.uid).child('carInfo').set(carInfoMap);
+    Fluttertoast.showToast(msg: AppStrings.carInfoSaved);
+    navigateToSplashScreen();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -151,7 +194,7 @@ class _CarInfoScreenState extends State<CarInfoScreen> {
                   CustomButton(
                       text: AppStrings.createAccountButton,
                       onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (c) => const SignUpScreen()));
+                        validateForm();
                       }
                   ),
 

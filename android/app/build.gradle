@@ -43,7 +43,7 @@ android {
 
     defaultConfig {
         applicationId "app.portugo.portugodriver"
-        minSdkVersion 20
+        minSdkVersion 21
         targetSdkVersion flutter.targetSdkVersion
         multiDexEnabled true
         versionCode flutterVersionCode.toInteger()

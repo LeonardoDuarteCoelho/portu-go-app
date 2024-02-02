@@ -46,7 +46,7 @@ void main() async {
           colorScheme: ColorScheme.fromSeed(seedColor: AppColors.indigo7),
           useMaterial3: true,
         ),
-        home: const MySplashScreen(),
+        home: const SplashScreen(),
         debugShowCheckedModeBanner: false,
       )
     ),

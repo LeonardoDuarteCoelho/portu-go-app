@@ -6,14 +6,14 @@ import 'package:portu_go_driver/authenticationScreens/signup_screen.dart';
 import 'package:portu_go_driver/constants.dart';
 import 'package:portu_go_driver/mainScreens/main_screen.dart';
 
-class MySplashScreen extends StatefulWidget {
-  const MySplashScreen({super.key});
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
 
   @override
-  State<MySplashScreen> createState() => _MySplashScreenState();
+  State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _MySplashScreenState extends State<MySplashScreen> {
+class _SplashScreenState extends State<SplashScreen> {
   // Duration of the splash screen:
   static const int splashScreenTimer = 3;
 

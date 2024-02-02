@@ -1,16 +1,27 @@
 import 'package:flutter/material.dart';
 
 class AppStrings {
+  // General strings
+  static const String ptCountryCode = '+351';
+  static const String createAccountButton = 'Criar conta';
+  static const String nameValidationToast = 'O nome não pode ser muito curto. Escreva seu nome completo.';
+  static const String emailValidationToast = 'O email inserido não é válido.';
+  static const String phoneValidationToast = 'Por favor, insira um número de telemóvel.';
+  static const String passwordValidationToast = 'A palavra-passe deve ter pelo menos dígitos.';
+  static const String loading = 'A processar. Aguarde...';
+  static const String accountCreated = 'Conta criada com sucesso!';
+  static const String carInfoSaved = 'Informações do carro guardadas.';
+
+  // Error messages
+  static const String errorAccountNotCreated = 'Houve um problema ao criar sua conta. Tente criar novamente.';
+
   // 'signup_screen.dart'
   static const String welcomeMessage = 'Bem-vindo à PortuGO!';
   static const String signingUpAsDriverMessage = 'Cadastre como motorista inserindo os seus dados abaixo.';
-  static const String nameTextField = 'Nome';
+  static const String nameTextField = 'Nome completo';
   static const String emailTextField = 'Email';
   static const String phoneTextField = 'Nº do telemóvel';
   static const String passwordTextField = 'Palavra-passe';
-
-  // 'signup_screen.dart' and 'car_info_screen.dart'
-  static const String createAccountButton = 'Criar conta';
 
   // 'car_info_screen.dart'
   static const String greetingsUserMessage = 'Quase lá!';
@@ -44,8 +55,12 @@ class AppStrings {
 class AppColors {
   // Essential colors:
   static const Color black = Color(0xFF000000);
+  static const Color blackTransparent = Color(0x80000000);
   static const Color white = Color(0xFFFFFFFF);
+  static const Color whiteTransparent = Color(0x80FFFFFF);
   static const Color transparent = Color(0x00000000);
+  static const Color success = Colors.green;
+  static const Color error = Colors.red;
 
   // Themed colors:
   static const Color gray0 = Color(0xFFF8F9FA);
