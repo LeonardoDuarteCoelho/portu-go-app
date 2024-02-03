@@ -24,6 +24,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController phoneTextEditingController = TextEditingController();
   TextEditingController passwordTextEditingController = TextEditingController();
 
+  // Firebase variables:
+  late final User? firebaseUser;
+  late Map driverMap;
+  late DatabaseReference driversRef;
+
   @override
   void initState() {
     super.initState();
@@ -62,11 +67,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
       }
     });
   }
-
-  // Firebase variables:
-  late final User? firebaseUser;
-  late Map driverMap;
-  late DatabaseReference driversRef;
 
   showToaster(String string) {
     Fluttertoast.showToast(msg: string);
@@ -127,9 +127,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
       // Saving the driver information to the database:
       driversRef = FirebaseDatabase.instance.ref().child('drivers');
       driversRef.child(firebaseUser!.uid).set(driverMap);
+      // Going forward with the creating account process:
       currentFirebaseUser = firebaseUser;
       showToaster(AppStrings.accountCreated);
-      // Going forward with the creating account process:
       navigateToCarInfoScreen();
     } else {
       setNavigatorPop();
