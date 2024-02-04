@@ -5,6 +5,7 @@ class AppStrings {
   static const String ptCountryCode = '+351';
   static const String createAccountButton = 'Criar conta';
   static const String loading = 'A processar. Aguarde...';
+  static const String loading2 = 'Inicializando app...';
   static const String accountCreated = 'Conta criada com sucesso!';
   static const String carInfoSaved = 'Informações do carro guardadas.';
 

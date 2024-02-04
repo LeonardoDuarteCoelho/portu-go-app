@@ -49,24 +49,40 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Material(
       child: Container(
-        color: AppColors.white,
-        child: const Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-      
-              SizedBox(height: 10),
-              Text(
-                "Splash Screen",
-                style: TextStyle(
-                  fontFamily: AppFontFamilies.primaryFont,
-                  fontSize: AppFontSizes.xl,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.gray9,
+        color: AppColors.indigo7,
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(AppSpaceValues.space6),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset('images/logo-portu-go-white.png'),
+
+                const SizedBox(height: AppSpaceValues.space7),
+
+                const Text(
+                  AppStrings.loading2,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontFamily: AppFontFamilies.primaryFont,
+                    fontSize: AppFontSizes.xl,
+                    fontWeight: AppFontWeights.light,
+                    color: AppColors.white,
+                    height: AppLineHeights.xl,
+                  ),
                 ),
-              ),
-      
-            ],
+
+                const SizedBox(height: AppSpaceValues.space2),
+
+
+                const Center(
+                  child: LinearProgressIndicator(
+                    backgroundColor: AppColors.indigo7,
+                    valueColor: AlwaysStoppedAnimation<Color>(AppColors.white),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
