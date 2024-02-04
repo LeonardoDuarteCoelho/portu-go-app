@@ -4,10 +4,6 @@ class AppStrings {
   // General strings
   static const String ptCountryCode = '+351';
   static const String createAccountButton = 'Criar conta';
-  static const String nameValidationToast = 'O nome não pode ser muito curto. Escreva seu nome completo.';
-  static const String emailValidationToast = 'O email inserido não é válido.';
-  static const String phoneValidationToast = 'Por favor, insira um número de telemóvel.';
-  static const String passwordValidationToast = 'A palavra-passe deve ter pelo menos dígitos.';
   static const String loading = 'A processar. Aguarde...';
   static const String accountCreated = 'Conta criada com sucesso!';
   static const String carInfoSaved = 'Informações do carro guardadas.';
@@ -18,10 +14,14 @@ class AppStrings {
   // 'signup_screen.dart'
   static const String welcomeMessage = 'Bem-vindo à PortuGO!';
   static const String signingUpAsDriverMessage = 'Cadastre como motorista inserindo os seus dados abaixo.';
-  static const String nameTextField = 'Nome completo';
+  static const String nameTextField = 'Nome e apelido';
   static const String emailTextField = 'Email';
   static const String phoneTextField = 'Nº do telemóvel';
   static const String passwordTextField = 'Palavra-passe';
+  static const String nameValidationToast = 'O nome não pode ser muito curto. Escreva seu nome completo.';
+  static const String emailValidationToast = 'O email inserido não é válido.';
+  static const String phoneValidationToast = 'Por favor, insira um número de telemóvel.';
+  static const String passwordValidationToast = 'A palavra-passe deve ter pelo menos 5 dígitos.';
 
   // 'car_info_screen.dart'
   static const String greetingsUserMessage = 'Quase lá!';
@@ -34,10 +34,16 @@ class AppStrings {
   static const String carGoExplanation = 'Carros comuns. Mínimo de 3 assentos disponíveis (porta-malas não é obrigatório).';
   static const String alreadyCreatedAccountButton = 'Já possuo uma conta';
 
-  // 'car_info_screen.dart'
+  // 'log_in_screen.dart'
   static const String welcomeBackMessage = 'Olá de novo!  :)';
-  static const String logInIntoYourAccount = 'Insira seu email e palavra-passe para dar entrada na sua conta';
+  static const String logInIntoYourAccount = 'Insira seu email e palavra-passe para dar entrada na sua conta.';
+  static const String mustEnterEmailAndPassword = 'É preciso que insiras o email e a palavra-passe.';
+  static const String mustEnterEmail = 'É preciso que insiras um email válido.';
+  static const String mustEnterPassword = 'É preciso que insiras a palavra-passe.';
   static const String enterAccountButton = 'Fazer login';
+  static const String dontHaveAccountButton = 'Sem conta? Aperte aqui!';
+  static const String logInSuccessful = 'Log in realizado. Bem-vindo de volta!';
+  static const String logInError = 'Erro ao entrar na conta. Cheque se as credenciais estão correctas.';
 
   // 'home_screen.dart'
   static const String homeScreenTitle = 'Home';
@@ -50,6 +56,7 @@ class AppStrings {
 
   // 'profile_screen.dart'
   static const String profileScreenTitle = 'Perfil';
+  static const String signOut = 'Terminar sessão';
 }
 
 class AppColors {

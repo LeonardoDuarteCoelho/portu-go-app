@@ -87,9 +87,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
   validateForm() {
     if(nameTextEditingController.text.length < 5) {
       showToaster(AppStrings.nameValidationToast);
-    } else if(!emailTextEditingController.text.contains('@')) {
+    } else if(!emailTextEditingController.text.contains('@') && !emailTextEditingController.text.contains('.')) {
       showToaster(AppStrings.emailValidationToast);
-    } else if(phoneTextEditingController.text.isEmpty) {
+    } else if(phoneTextEditingController.text.length <= 13) /* "13" is the standard phone number length in PT */ {
       showToaster(AppStrings.phoneValidationToast);
     } else if(passwordTextEditingController.text.length <= 5) {
       showToaster(AppStrings.passwordValidationToast);
@@ -107,14 +107,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
         }
     );
     firebaseUser = (
-        await fAuth.createUserWithEmailAndPassword(
-          // '.trim()' makes so that if the user inserts extra space at the end by accident, it won't count.
-          email: emailTextEditingController.text.trim(),
-          password: passwordTextEditingController.text.trim()
-        ).catchError((msg) /* 'msg' will be the error message */ {
-          setNavigatorPop();
-          showToaster('Error: $msg');
-        })
+      await fAuth.createUserWithEmailAndPassword(
+        // '.trim()' makes so that if the user inserts extra space at the end by accident, it won't count.
+        email: emailTextEditingController.text.trim(),
+        password: passwordTextEditingController.text.trim()
+      ).catchError((msg) /* 'msg' will be the error message */ {
+        setNavigatorPop();
+        showToaster('Error: $msg');
+      })
     ).user;
     // If the user has been created successfully...
     if(firebaseUser != null) {
@@ -225,10 +225,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           text: AppStrings.alreadyCreatedAccountButton,
                           backgroundColor: AppColors.gray2,
                           textColor: AppColors.gray9,
-                          onPressed: () {
-                            validateForm();
-                            navigateToLogInScreen();
-                          }
+                          onPressed: () { navigateToLogInScreen(); }
                       ),
 
                       const SizedBox(height: AppSpaceValues.space3),

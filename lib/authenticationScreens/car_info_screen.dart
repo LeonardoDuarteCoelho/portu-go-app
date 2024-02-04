@@ -183,7 +183,7 @@ class _CarInfoScreenState extends State<CarInfoScreen> {
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                           fontSize: AppFontSizes.m,
-                          height: AppLineHeights.m,
+                          height: AppLineHeights.ml,
                           color: AppColors.gray9,
                         ),
                       ),

@@ -1,9 +1,16 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:portu_go_driver/authenticationScreens/signup_screen.dart';
 import 'package:portu_go_driver/components/text_input.dart';
 import 'package:portu_go_driver/constants.dart';
+import 'package:portu_go_driver/mainScreens/main_screen.dart';
+import 'package:portu_go_driver/splashScreen/splash_screen.dart';
 
 import '../components/button.dart';
+import '../components/progress_dialog.dart';
+import '../global/global.dart';
 import 'car_info_screen.dart';
 
 class LogInScreen extends StatefulWidget {
@@ -16,6 +23,63 @@ class LogInScreen extends StatefulWidget {
 class _LogInScreenState extends State<LogInScreen> {
   TextEditingController emailTextEditingController = TextEditingController();
   TextEditingController passwordTextEditingController = TextEditingController();
+
+  // Firebase variables:
+  late final User? firebaseUser;
+
+  navigateToSplashScreen() {
+    Navigator.push(context, MaterialPageRoute(builder: (c) => const SplashScreen()));
+  }
+
+  showToaster(String string) {
+    Fluttertoast.showToast(msg: string);
+  }
+
+  setNavigatorPop() {
+    Navigator.pop(context);
+  }
+
+  validateForm() {
+    if(emailTextEditingController.text.isEmpty) {
+      showToaster(AppStrings.mustEnterEmail);
+    } else if(passwordTextEditingController.text.isEmpty) {
+      showToaster(AppStrings.mustEnterPassword);
+    } else if(passwordTextEditingController.text.isEmpty && emailTextEditingController.text.isEmpty) {
+      showToaster(AppStrings.mustEnterEmailAndPassword);
+    } else {
+      checkCredentialsForLogIn();
+    }
+  }
+
+  checkCredentialsForLogIn() async {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext c) {
+          return ProgressDialog(message: AppStrings.loading);
+        }
+    );
+    firebaseUser = (
+      await fAuth.signInWithEmailAndPassword(
+        // '.trim()' makes so that if the user inserts extra space at the end by accident, it won't count.
+        email: emailTextEditingController.text.trim(),
+        password: passwordTextEditingController.text.trim()
+      ).catchError((msg) /* 'msg' will be the error message */ {
+        setNavigatorPop();
+        showToaster(AppStrings.logInError);
+      })
+    ).user;
+    // If the user has been created successfully...
+    if(firebaseUser != null) {
+      // Going forward with the log in process:
+      currentFirebaseUser = firebaseUser;
+      showToaster(AppStrings.logInSuccessful);
+      navigateToSplashScreen();
+    } else {
+      setNavigatorPop();
+      showToaster(AppStrings.logInError);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,6 +140,17 @@ class _LogInScreenState extends State<LogInScreen> {
 
                   CustomButton(
                       text: AppStrings.enterAccountButton,
+                      onPressed: () {
+                        validateForm();
+                      }
+                  ),
+
+                  const SizedBox(height: AppSpaceValues.space3),
+
+                  CustomButton(
+                      text: AppStrings.dontHaveAccountButton,
+                      backgroundColor: AppColors.gray2,
+                      textColor: AppColors.gray9,
                       onPressed: () {
                         Navigator.push(context, MaterialPageRoute(builder: (c) => const SignUpScreen()));
                       }
