@@ -26,9 +26,14 @@ class _LogInScreenState extends State<LogInScreen> {
 
   // Firebase variables:
   late final User? firebaseUser;
+  late DatabaseReference driversRef;
 
   navigateToSplashScreen() {
     Navigator.push(context, MaterialPageRoute(builder: (c) => const SplashScreen()));
+  }
+
+  navigateToSignUpScreen() {
+    Navigator.push(context, MaterialPageRoute(builder: (c) => const SignUpScreen()));
   }
 
   showToaster(String string) {
@@ -71,10 +76,23 @@ class _LogInScreenState extends State<LogInScreen> {
     ).user;
     // If the user has been created successfully...
     if(firebaseUser != null) {
-      // Going forward with the log in process:
-      currentFirebaseUser = firebaseUser;
-      showToaster(AppStrings.logInSuccessful);
-      navigateToSplashScreen();
+      // Checking if the driver records already exists:
+      driversRef = FirebaseDatabase.instance.ref().child('drivers');
+      driversRef.child(firebaseUser!.uid).once().then((driverKey) {
+        final snap = driverKey.snapshot;
+        // If record exists...
+        if(snap.value != null) {
+          // Going forward with the log in process:
+          currentFirebaseUser = firebaseUser;
+          showToaster(AppStrings.logInSuccessful);
+          navigateToSplashScreen();
+        } else {
+          // Warning user that their email hasn't been registered:
+          showToaster(AppStrings.logInErrorNoRecordOfEmail);
+          fAuth.signOut();
+          navigateToSplashScreen();
+        }
+      });
     } else {
       setNavigatorPop();
       showToaster(AppStrings.logInError);
@@ -140,9 +158,7 @@ class _LogInScreenState extends State<LogInScreen> {
 
                   CustomButton(
                       text: AppStrings.enterAccountButton,
-                      onPressed: () {
-                        validateForm();
-                      }
+                      onPressed: () { validateForm(); }
                   ),
 
                   const SizedBox(height: AppSpaceValues.space3),
@@ -151,9 +167,7 @@ class _LogInScreenState extends State<LogInScreen> {
                       text: AppStrings.dontHaveAccountButton,
                       backgroundColor: AppColors.gray2,
                       textColor: AppColors.gray9,
-                      onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (c) => const SignUpScreen()));
-                      }
+                      onPressed: () { navigateToSignUpScreen(); }
                   ),
 
                   const SizedBox(height: AppSpaceValues.space3),

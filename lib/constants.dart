@@ -21,8 +21,9 @@ class AppStrings {
   static const String passwordTextField = 'Palavra-passe';
   static const String nameValidationToast = 'O nome não pode ser muito curto. Escreva seu nome completo.';
   static const String emailValidationToast = 'O email inserido não é válido.';
-  static const String phoneValidationToast = 'Por favor, insira um número de telemóvel.';
+  static const String phoneValidationToast = 'Por favor, insira um número de telemóvel válido.';
   static const String passwordValidationToast = 'A palavra-passe deve ter pelo menos 5 dígitos.';
+  static const String signUpError = 'Erro ao criar conta. Cheque sua conexão e tente novamente.';
 
   // 'car_info_screen.dart'
   static const String greetingsUserMessage = 'Quase lá!';
@@ -34,6 +35,7 @@ class AppStrings {
   static const String carPrimeExplanation = 'Carros SUV ou minivans. Mínimo de 5 assentos disponíveis e espaço para malas.';
   static const String carGoExplanation = 'Carros comuns. Mínimo de 3 assentos disponíveis (porta-malas não é obrigatório).';
   static const String alreadyCreatedAccountButton = 'Já possuo uma conta';
+  static const String emptyCarDataTextFields = 'É obrigatório preencher todos os dados do seu carro.';
 
   // 'log_in_screen.dart'
   static const String welcomeBackMessage = 'Olá de novo!  :)';
@@ -44,6 +46,7 @@ class AppStrings {
   static const String enterAccountButton = 'Fazer login';
   static const String dontHaveAccountButton = 'Sem conta? Aperte aqui!';
   static const String logInSuccessful = 'Log in realizado. Bem-vindo de volta!';
+  static const String logInErrorNoRecordOfEmail = 'Erro ao entrar na conta. Este email não foi registado como motorista.';
   static const String logInError = 'Erro ao entrar na conta. Cheque se as credenciais estão correctas.';
 
   // 'home_screen.dart'

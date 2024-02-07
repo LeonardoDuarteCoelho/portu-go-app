@@ -38,6 +38,10 @@ class _CarInfoScreenState extends State<CarInfoScreen> {
   };
   String? selectedCarType;
 
+  showToaster(String string) {
+    Fluttertoast.showToast(msg: string);
+  }
+
   navigateToSplashScreen() {
     Navigator.push(context, MaterialPageRoute(builder: (c) => const SplashScreen()));
   }
@@ -48,6 +52,8 @@ class _CarInfoScreenState extends State<CarInfoScreen> {
     && carColorTextEditingController.text.isNotEmpty
     && selectedCarType != null) {
       saveCarInfo();
+    } else {
+      showToaster(AppStrings.emptyCarDataTextFields);
     }
   }
 
@@ -68,7 +74,7 @@ class _CarInfoScreenState extends State<CarInfoScreen> {
     // Saving the car information to the database:
     carInfoRef = FirebaseDatabase.instance.ref().child('drivers');
     carInfoRef.child(currentFirebaseUser!.uid).child('carInfo').set(carInfoMap);
-    Fluttertoast.showToast(msg: AppStrings.carInfoSaved);
+    showToaster(AppStrings.carInfoSaved);
     navigateToSplashScreen();
   }
 

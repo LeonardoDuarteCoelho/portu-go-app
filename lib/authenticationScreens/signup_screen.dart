@@ -87,11 +87,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
   validateForm() {
     if(nameTextEditingController.text.length < 5) {
       showToaster(AppStrings.nameValidationToast);
-    } else if(!emailTextEditingController.text.contains('@') && !emailTextEditingController.text.contains('.')) {
+    } else if(!emailTextEditingController.text.contains('@') || !emailTextEditingController.text.contains('.')) {
       showToaster(AppStrings.emailValidationToast);
-    } else if(phoneTextEditingController.text.length <= 13) /* "13" is the standard phone number length in PT */ {
+    } else if(phoneTextEditingController.text.length < 13) /* "12" is the standard phone number length in PT */ {
       showToaster(AppStrings.phoneValidationToast);
-    } else if(passwordTextEditingController.text.length <= 5) {
+    } else if(passwordTextEditingController.text.length < 5) {
       showToaster(AppStrings.passwordValidationToast);
     } else {
       saveDriverInfo();
@@ -113,7 +113,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         password: passwordTextEditingController.text.trim()
       ).catchError((msg) /* 'msg' will be the error message */ {
         setNavigatorPop();
-        showToaster('Error: $msg');
+        showToaster(AppStrings.signUpError);
       })
     ).user;
     // If the user has been created successfully...
@@ -213,9 +213,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       // Sign up button:
                       CustomButton(
                           text: AppStrings.createAccountButton,
-                          onPressed: () {
-                            validateForm();
-                          }
+                          onPressed: () { validateForm(); }
                       ),
 
                       const SizedBox(height: AppSpaceValues.space3),
