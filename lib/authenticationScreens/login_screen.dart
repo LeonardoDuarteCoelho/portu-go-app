@@ -76,11 +76,11 @@ class _LogInScreenState extends State<LogInScreen> {
     ).user;
     // If the user has been created successfully...
     if(firebaseUser != null) {
-      // Checking if the driver records already exists:
+      // Checking if the driver's records already exists:
       driversRef = FirebaseDatabase.instance.ref().child('drivers');
       driversRef.child(firebaseUser!.uid).once().then((driverKey) {
         final snap = driverKey.snapshot;
-        // If record exists...
+        // If the records exist...
         if(snap.value != null) {
           // Going forward with the log in process:
           currentFirebaseUser = firebaseUser;

@@ -35,8 +35,8 @@ class CustomButton extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min, // Ensures the Row only takes up necessary space
         children: [
-          if (icon != null) Icon(icon, size: btnContentSize), // Conditional icon
-          if (icon != null) const SizedBox(width: AppSpaceValues.space1), // Space between icon and text
+          if(icon != null) Icon(icon, size: btnContentSize), // Conditional icon
+          if(icon != null) const SizedBox(width: AppSpaceValues.space2), // Space between icon and text
           Text(
             text,
             style: TextStyle(
