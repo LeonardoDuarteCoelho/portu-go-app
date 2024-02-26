@@ -22,7 +22,10 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMixin, WidgetsBindingObserver {
+  @override
+  bool get wantKeepAlive => true;
+
   bool ifUserGrantedLocationPermission = true; // Whether the app shows a warning telling the user to enable access to location or not.
   bool showRouteConfirmationOptions = false; // Show the user options to confirm or deny the pick-up-to-drop-off route.
   bool ifRouteIsConfirmed = false; // Check if user confirmed the route for selected destination.
@@ -64,7 +67,28 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this); // Adding an observer that checks when the user leaves the app.
     checkLocationPermissionStatus();
+  }
+
+  // This 'dispose()' method will be automatically called when the user leaves the app:
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    // If app is in the background or closed...
+    if (state == AppLifecycleState.paused || state == AppLifecycleState.detached) {
+      setDriverStatusToOffline();
+      setState(() {
+        driverCurrentStatus = AppStrings.nowOffline;
+        ifDriverIsActive = false;
+      });
+    }
   }
 
   navigateToSplashScreen() {
@@ -279,6 +303,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     return Stack(
       children: [
 
