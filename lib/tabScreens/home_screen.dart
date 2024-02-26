@@ -13,6 +13,7 @@ import 'package:portu_go_driver/constants.dart';
 import '../assistants/assistant_methods.dart';
 import '../global/global.dart';
 import '../models/direction_route_details.dart';
+import '../splashScreen/splash_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -25,7 +26,6 @@ class _HomeScreenState extends State<HomeScreen> {
   bool ifUserGrantedLocationPermission = true; // Whether the app shows a warning telling the user to enable access to location or not.
   bool showRouteConfirmationOptions = false; // Show the user options to confirm or deny the pick-up-to-drop-off route.
   bool ifRouteIsConfirmed = false; // Check if user confirmed the route for selected destination.
-  bool ifDriverIsActive = false; // Check if driver is on offline mode.
   String driverCurrentStatus = AppStrings.nowOffline;
   String? pickUpLocationText;
   String? dropOffLocationText;
@@ -65,6 +65,10 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     checkLocationPermissionStatus();
+  }
+
+  navigateToSplashScreen() {
+    Navigator.push(context, MaterialPageRoute(builder: (c) => const SplashScreen()));
   }
 
   setGoogleMapThemeToBlack (bool changeToBlackTheme) {
@@ -416,15 +420,13 @@ class _HomeScreenState extends State<HomeScreen> {
     findDriverPositionWhenOnline = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     driverCurrentPosition = findDriverPositionWhenOnline;
     // If driver's online, you'll put him as an active driver. If driver's offline, you won't do this:
-    if(ifDriverIsActive) {
-      Geofire.initialize('activeDrivers');
-      Geofire.setLocation(currentFirebaseUser!.uid, driverCurrentPosition!.latitude, driverCurrentPosition!.longitude);
-      driversStatusRef = FirebaseDatabase.instance.ref().child('drivers').child(currentFirebaseUser!.uid).child('newRideStatus');
-      driversStatusRef?.set('available'); // Setting driver to be available for ride requests from passengers.
-      driversStatusRef?.onValue.listen((event) {
+    Geofire.initialize('activeDrivers');
+    Geofire.setLocation(currentFirebaseUser!.uid, driverCurrentPosition!.latitude, driverCurrentPosition!.longitude);
+    driversStatusRef = FirebaseDatabase.instance.ref().child('drivers').child(currentFirebaseUser!.uid).child('newRideStatus');
+    driversStatusRef?.set('available'); // Setting driver to be available for ride requests from passengers.
+    driversStatusRef?.onValue.listen((event) {
 
-      });
-    }
+    });
   }
 
   // This method will be called when the driver re-enters offline mode:
