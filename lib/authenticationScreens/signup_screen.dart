@@ -133,7 +133,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       navigateToCarInfoScreen();
     } else {
       setNavigatorPop();
-      showToaster(AppStrings.errorAccountNotCreated);
+      showToaster(AppStrings.accountNotCreatedError);
     }
   }
 

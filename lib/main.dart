@@ -3,11 +3,13 @@ import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:portu_go_driver/constants.dart';
+import 'package:portu_go_driver/infoHandler/app_info.dart';
 import 'package:portu_go_driver/splashScreen/splash_screen.dart';
+import 'package:provider/provider.dart';
 
-/// CHANGELOG:
+/// ## CHANGELOG
 ///
-/// (23/01/2024)
+/// ### (23/01/2024)
 /// The initial 'main.dart' file created by the Flutter app itself was modified before the start of development.
 /// The reason for those changes is due to my constant need to restart the function, since we'll be implementing
 /// the live location for both the passengers as well as the drivers. Therefore, I modified the initial 'main.dart'
@@ -16,9 +18,11 @@ import 'package:portu_go_driver/splashScreen/splash_screen.dart';
 /// The utilization of 'WidgetsFlutterBinding.ensureInitialized()' for instance, makes asynchronous operations
 /// before running the app (like initializing Firebase or other services) way more viable.
 ///
-/// (31/01/2024)
+/// ### (31/01/2024)
 /// Added Firebase connection. Credentials are all located at 'google-services.json'
-
+///
+/// ### (03/03/2024)
+/// Added a 'ChangeNotifierProvider' widget for handling FCM.
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -42,14 +46,17 @@ void main() async {
 
   runApp(
     MyApp(
-      child: MaterialApp(
-        title: 'PortuGO Driver',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: AppColors.indigo7),
-          useMaterial3: true,
+      child: ChangeNotifierProvider(
+        create: (context) => AppInfo(),
+        child: MaterialApp(
+          title: 'PortuGO Driver',
+          theme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(seedColor: AppColors.indigo7),
+            useMaterial3: true,
+          ),
+          home: const SplashScreen(),
+          debugShowCheckedModeBanner: false,
         ),
-        home: const SplashScreen(),
-        debugShowCheckedModeBanner: false,
       )
     ),
   );

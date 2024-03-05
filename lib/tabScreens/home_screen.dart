@@ -9,6 +9,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:portu_go_driver/components/button.dart';
 import 'package:portu_go_driver/constants.dart';
+import 'package:portu_go_driver/pushNotifications/push_notification_system.dart';
 
 import '../assistants/assistant_methods.dart';
 import '../global/global.dart';
@@ -22,10 +23,9 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMixin, WidgetsBindingObserver {
+class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMixin/*, WidgetsBindingObserver*/ {
   @override
   bool get wantKeepAlive => true;
-
   bool ifUserGrantedLocationPermission = true; // Whether the app shows a warning telling the user to enable access to location or not.
   bool showRouteConfirmationOptions = false; // Show the user options to confirm or deny the pick-up-to-drop-off route.
   bool ifRouteIsConfirmed = false; // Check if user confirmed the route for selected destination.
@@ -38,8 +38,6 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
   LocationPermission? _locationPermission;
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   double mapControlsContainerHeight = 40;
-
-  // Geolocator variables:
   static const CameraPosition _dummyLocation = CameraPosition(
     target: LatLng(0, 0), // Placeholder location when app's still locating user.
     zoom: 17,
@@ -51,34 +49,31 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
   var geolocator = Geolocator();
   final Completer<GoogleMapController> _controllerGoogleMap = Completer<GoogleMapController>();
   GoogleMapController? newGoogleMapController;
-
-  // Map route variables:
   dynamic responseFromSearchScreen;
   DirectionRouteDetails? directionRouteDetails;
   List<LatLng> polylineCoordinatesList = [];
   Set<Polyline> polylineSet = {};
   LatLngBounds? latLngBounds;
   Set<Marker> markersSet = {};
-
-  // Geofire variables:
   DatabaseReference? driversStatusRef;
   Position? findDriverPositionWhenOnline;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addObserver(this); // Adding an observer that checks when the user leaves the app.
+    // WidgetsBinding.instance.addObserver(this); // Adding an observer that checks when the user leaves the app.
     checkLocationPermissionStatus();
+    readCurrentDriverInfo();
   }
 
-  // This 'dispose()' method will be automatically called when the user leaves the app:
+  /*// This 'dispose()' method will be automatically called when the user leaves the app:
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
-  }
+  }*/
 
-  @override
+  /*@override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
     // If app is in the background or closed...
@@ -89,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
         ifDriverIsActive = false;
       });
     }
-  }
+  }*/
 
   navigateToSplashScreen() {
     Navigator.push(context, MaterialPageRoute(builder: (c) => const SplashScreen()));
@@ -301,6 +296,13 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
     getHumanReadableAddress();
   }
 
+  readCurrentDriverInfo() async {
+    currentFirebaseUser = fAuth.currentUser;
+    PushNotificationSystem pushNotificationSystem = PushNotificationSystem();
+    pushNotificationSystem.initializeCloudMessaging();
+    pushNotificationSystem.generateToken();
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -466,6 +468,7 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
 
   updateDriversLocationInRealtime() {
     LatLng latLng; // Auxiliary variable
+
     streamSubscriptionPosition = Geolocator.getPositionStream().listen((Position position) {
       driverCurrentPosition = position;
       if(ifDriverIsActive) Geofire.setLocation(currentFirebaseUser!.uid, driverCurrentPosition!.latitude, driverCurrentPosition!.longitude);

@@ -13,8 +13,9 @@ class AppStrings {
   // Error strings
   /// This string is integral for the connections between APIs and the app (Check 'assistant_methods.dart'). Be mindful when editing it.
   static const String connectToApiError = 'Erro na conexão entre a app e a API.';
-  static const String errorAccountNotCreated = 'Houve um problema ao criar sua conta. Tente criar novamente.';
+  static const String accountNotCreatedError = 'Houve um problema ao criar sua conta. Tente criar novamente.';
   static const String signUpError = 'Erro ao criar conta. Cheque sua conexão e tente novamente.';
+  static const String rideRequestError = 'Erro ao receber as informações do pedido do passageiro.';
 
   // 'signup_screen.dart'
   static const String welcomeMessage = 'Bem-vindo à PortuGO!';
