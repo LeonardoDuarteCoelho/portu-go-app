@@ -23,7 +23,7 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMixin/*, WidgetsBindingObserver*/ {
+class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
   bool ifUserGrantedLocationPermission = true; // Whether the app shows a warning telling the user to enable access to location or not.
@@ -61,30 +61,9 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
   @override
   void initState() {
     super.initState();
-    // WidgetsBinding.instance.addObserver(this); // Adding an observer that checks when the user leaves the app.
     checkLocationPermissionStatus();
     readCurrentDriverInfo();
   }
-
-  /*// This 'dispose()' method will be automatically called when the user leaves the app:
-  @override
-  void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-    super.dispose();
-  }*/
-
-  /*@override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    super.didChangeAppLifecycleState(state);
-    // If app is in the background or closed...
-    if (state == AppLifecycleState.paused || state == AppLifecycleState.detached) {
-      setDriverStatusToOffline();
-      setState(() {
-        driverCurrentStatus = AppStrings.nowOffline;
-        ifDriverIsActive = false;
-      });
-    }
-  }*/
 
   navigateToSplashScreen() {
     Navigator.push(context, MaterialPageRoute(builder: (c) => const SplashScreen()));
@@ -299,7 +278,7 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
   readCurrentDriverInfo() async {
     currentFirebaseUser = fAuth.currentUser;
     PushNotificationSystem pushNotificationSystem = PushNotificationSystem();
-    pushNotificationSystem.initializeCloudMessaging();
+    pushNotificationSystem.initializeCloudMessaging(context);
     pushNotificationSystem.generateToken();
   }
 

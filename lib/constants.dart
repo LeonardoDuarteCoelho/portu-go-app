@@ -71,6 +71,13 @@ class AppStrings {
   // 'profile_screen.dart'
   static const String profileScreenTitle = 'Perfil';
   static const String signOut = 'Terminar sessão';
+
+  // 'notification_dialog_box.dart'
+  static const String newRequest = 'Novo pedido!';
+  static const String origin = 'Origem';
+  static const String destination = 'Destino';
+  static const String acceptRequest = 'Aceitar corrida';
+  static const String denyRequest = 'Recusar corrida';
 }
 
 class AppColors {

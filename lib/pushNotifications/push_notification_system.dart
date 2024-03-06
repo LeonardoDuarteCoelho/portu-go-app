@@ -1,10 +1,12 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:portu_go_driver/global/global.dart';
 import 'package:portu_go_driver/models/passenger_ride_request_info.dart';
+import 'package:portu_go_driver/pushNotifications/notification_dialog_box.dart';
 
 import '../constants.dart';
 
@@ -20,7 +22,7 @@ class PushNotificationSystem {
   String? passengerName;
   String? passengerPhone;
 
-  Future initializeCloudMessaging() async {
+  Future initializeCloudMessaging(BuildContext context) async {
     //  +------------------------------------------------------------------------------------+
     //  |                                   TYPES OF STATE                                   |
     //  +------------+-----------------------------------------------------------------------+
@@ -41,25 +43,25 @@ class PushNotificationSystem {
     FirebaseMessaging.instance.getInitialMessage().then((RemoteMessage? remoteMessage) {
       if(remoteMessage != null) {
         // TODO: Display passenger's ride request information.
-        readPassengerRideRequestInfo(remoteMessage.data['rideRequestId']);
+        readPassengerRideRequestInfo(remoteMessage.data['rideRequestId'], context);
       }
     });
 
     // 2. Foreground state:
     FirebaseMessaging.onMessage.listen((RemoteMessage? remoteMessage) {
       // TODO: Display passenger's ride request information.
-      readPassengerRideRequestInfo(remoteMessage?.data['rideRequestId']);
+      readPassengerRideRequestInfo(remoteMessage?.data['rideRequestId'], context);
     });
 
     // 3. Background state:
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage? remoteMessage) {
       // TODO: Display passenger's ride request information.
-      readPassengerRideRequestInfo(remoteMessage?.data['rideRequestId']);
+      readPassengerRideRequestInfo(remoteMessage?.data['rideRequestId'], context);
     });
   }
 
-  readPassengerRideRequestInfo(String passengerRideRequestId) {
-    FirebaseDatabase.instance.ref().child('rideRequests').child('passengerRideRequestId').once().then((snapData) {
+  readPassengerRideRequestInfo(String passengerRideRequestId, BuildContext context) {
+    FirebaseDatabase.instance.ref().child('rideRequests').child(passengerRideRequestId).once().then((snapData) {
       if(snapData.snapshot.value != null) {
         // Getting the ride request information from the database:
         originLatitude = double.parse((snapData.snapshot.value! as Map)['origin']['latitude']);
@@ -81,6 +83,15 @@ class PushNotificationSystem {
         passengerRideRequestInfo.passengerId = passengerId;
         passengerRideRequestInfo.passengerName = passengerName;
         passengerRideRequestInfo.passengerPhone = passengerPhone;
+
+        print(passengerName);
+
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => NotificationDialogBox(
+            passengerRideRequestInfo: passengerRideRequestInfo,
+          ),
+        );
       } else {
         Fluttertoast.showToast(msg: AppStrings.rideRequestError);
       }
