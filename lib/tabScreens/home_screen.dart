@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -28,16 +29,11 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
   @override
   bool get wantKeepAlive => true;
   bool ifUserGrantedLocationPermission = true; // Whether the app shows a warning telling the user to enable access to location or not.
-  bool showRouteConfirmationOptions = false; // Show the user options to confirm or deny the pick-up-to-drop-off route.
-  bool ifRouteIsConfirmed = false; // Check if user confirmed the route for selected destination.
   String driverCurrentStatus = AppStrings.nowOffline;
-  String? pickUpLocationText;
-  String? dropOffLocationText;
   String driverName = '';
   String driverEmail = '';
   String driverPhone = '';
   LocationPermission? _locationPermission;
-  GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   double mapControlsContainerHeight = 40;
   static const CameraPosition _dummyLocation = CameraPosition(
     target: LatLng(0, 0), // Placeholder location when app's still locating user.
@@ -45,17 +41,10 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
   );
   Position? geolocatorPosition;
   LatLng? latitudeAndLongitudePosition;
-  Position? driverCurrentPosition;
   CameraPosition? cameraPosition;
   var geolocator = Geolocator();
   final Completer<GoogleMapController> _controllerGoogleMap = Completer<GoogleMapController>();
   GoogleMapController? newGoogleMapController;
-  dynamic responseFromSearchScreen;
-  DirectionRouteDetails? directionRouteDetails;
-  List<LatLng> polylineCoordinatesList = [];
-  Set<Polyline> polylineSet = {};
-  LatLngBounds? latLngBounds;
-  Set<Marker> markersSet = {};
   DatabaseReference? driversStatusRef;
   Position? findDriverPositionWhenOnline;
 
@@ -110,6 +99,20 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
 
   readCurrentDriverInfo() async {
     currentFirebaseUser = fAuth.currentUser;
+    // Getting all the driver's information for the ride request:
+    FirebaseDatabase.instance.ref().child('drivers').child(currentFirebaseUser!.uid).once().then((snap) {
+      if(snap.snapshot.value != null) {
+        driverData.id = (snap.snapshot.value as Map)['id'];
+        driverData.name = (snap.snapshot.value as Map)['name'];
+        driverData.phone = (snap.snapshot.value as Map)['phone'];
+        driverData.email = (snap.snapshot.value as Map)['email'];
+        driverData.token = (snap.snapshot.value as Map)['token'];
+        driverData.carColor = (snap.snapshot.value as Map)['carInfo']['carColor'];
+        driverData.carModel = (snap.snapshot.value as Map)['carInfo']['carModel'];
+        driverData.carNumber = (snap.snapshot.value as Map)['carInfo']['carNumber'];
+        driverData.carType = (snap.snapshot.value as Map)['carInfo']['carType'];
+      } else { Fluttertoast.showToast(msg: AppStrings.getDriverDataError); }
+    });
     PushNotificationSystem pushNotificationSystem = PushNotificationSystem();
     pushNotificationSystem.initializeCloudMessaging(context);
     pushNotificationSystem.generateToken();

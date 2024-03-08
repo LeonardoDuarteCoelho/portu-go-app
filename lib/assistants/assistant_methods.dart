@@ -8,7 +8,6 @@ import 'package:portu_go_driver/global/map_api_key.dart';
 import 'package:portu_go_driver/infoHandler/app_info.dart';
 import 'package:portu_go_driver/models/direction_route_details.dart';
 import 'package:portu_go_driver/models/directions.dart';
-import 'package:portu_go_driver/models/driver_model.dart';
 import 'package:portu_go_driver/assistants/assistant_request.dart';
 import 'package:portu_go_driver/infoHandler/app_info.dart';
 import 'package:provider/provider.dart';
@@ -39,7 +38,7 @@ class AssistantMethods {
     }
     return humanReadableAddress;
   }
-
+  /* TODO: Check if this really has an use.
   static void getCurrentOnlineDriverInfo() async {
     currentFirebaseUser = fAuth.currentUser;
     DatabaseReference driversRef = FirebaseDatabase
@@ -53,6 +52,7 @@ class AssistantMethods {
       }
     });
   }
+  */
 
   static Future<DirectionRouteDetails?> obtainOriginToDestinationDirectionDetails(LatLng originPosition, LatLng destinationPosition) async {
     String urlOriginToDestinationDirectionDetails = 'https://maps.googleapis.com/maps/api/directions/json?origin=${originPosition.latitude},${originPosition.longitude}&destination=${destinationPosition.latitude},${destinationPosition.longitude}&key=$mapKey';

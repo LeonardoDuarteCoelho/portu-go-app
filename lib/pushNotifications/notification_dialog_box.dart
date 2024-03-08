@@ -64,7 +64,7 @@ class _NotificationDialogBoxState extends State<NotificationDialogBox> {
                           Icon(
                             Icons.location_history_sharp,
                             size: AppSpaceValues.space4,
-                            color: AppColors.indigo9,
+                            color: AppColors.success5,
                           ),
 
                           SizedBox(width: AppSpaceValues.space1),

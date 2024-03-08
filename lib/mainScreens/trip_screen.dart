@@ -2,13 +2,16 @@ import 'dart:async';
 
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:portu_go_driver/components/button.dart';
+import 'package:portu_go_driver/global/global.dart';
 import 'package:portu_go_driver/models/passenger_ride_request_info.dart';
 
 import '../assistants/assistant_google_map_theme.dart';
 import '../assistants/assistant_methods.dart';
+import '../components/progress_dialog.dart';
 import '../constants.dart';
 import '../models/direction_route_details.dart';
 
@@ -24,17 +27,9 @@ class TripScreen extends StatefulWidget {
 class _TripScreenState extends State<TripScreen> {
   @override
   bool get wantKeepAlive => true;
-  bool ifUserGrantedLocationPermission = true; // Whether the app shows a warning telling the user to enable access to location or not.
-  bool showRouteConfirmationOptions = false; // Show the user options to confirm or deny the pick-up-to-drop-off route.
-  bool ifRouteIsConfirmed = false; // Check if user confirmed the route for selected destination.
-  String driverCurrentStatus = AppStrings.nowOffline;
-  String? pickUpLocationText;
-  String? dropOffLocationText;
   String driverName = '';
   String driverEmail = '';
   String driverPhone = '';
-  LocationPermission? _locationPermission;
-  GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   double tripInfoContainerHeight = 260; // Trip info panel's height.
   double mapControlsContainerHeight = 300; // Map controls' height.
   static const CameraPosition _dummyLocation = CameraPosition(
@@ -43,43 +38,20 @@ class _TripScreenState extends State<TripScreen> {
   );
   Position? geolocatorPosition;
   LatLng? latitudeAndLongitudePosition;
-  Position? driverCurrentPosition;
   CameraPosition? cameraPosition;
   var geolocator = Geolocator();
   final Completer<GoogleMapController> _controllerGoogleMap = Completer<GoogleMapController>();
   GoogleMapController? newGoogleMapController;
-  dynamic responseFromSearchScreen;
-  DirectionRouteDetails? directionRouteDetails;
+  String? btnTitle = 'Passageiro recolhido';
+  Color? btnColor = AppColors.indigo7;
+  Set<Marker> markersSet = Set<Marker>();
+  Set<Polyline> polylineSet = Set<Polyline>();
   List<LatLng> polylineCoordinatesList = [];
-  Set<Polyline> polylineSet = {};
+  PolylinePoints polylinePoints = PolylinePoints();
   LatLngBounds? latLngBounds;
-  Set<Marker> markersSet = {};
-  DatabaseReference? driversStatusRef;
-  Position? findDriverPositionWhenOnline;
-  String? buttonTitle = 'Passageiro buscado';
 
-  Future<String> getHumanReadableAddress() async {
-    String humanReadableAddress = await AssistantMethods.searchAddressForGeographicCoordinates(driverCurrentPosition!, context);
-    return humanReadableAddress;
-  }
-
-  // Method that'll give the user's current position on the map:
-  findDriverPosition() async {
-    geolocatorPosition = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-    driverCurrentPosition = geolocatorPosition;
-    latitudeAndLongitudePosition = LatLng(
-        driverCurrentPosition!.latitude,
-        driverCurrentPosition!.longitude
-    );
-    // Adjusting camera based on the user's current position:
-    cameraPosition = CameraPosition(
-        target: latitudeAndLongitudePosition!,
-        bearing: driverCurrentPosition!.heading,
-        zoom: 17
-    );
-    // Updating camera position:
-    newGoogleMapController?.animateCamera(CameraUpdate.newCameraPosition(cameraPosition!));
-    getHumanReadableAddress();
+  setNavigatorPop() {
+    Navigator.pop(context);
   }
 
   @override
@@ -87,6 +59,7 @@ class _TripScreenState extends State<TripScreen> {
     return Scaffold(
       body: Stack(
         children: [
+          // Google Map:
           Padding(
             padding: EdgeInsets.only(bottom: tripInfoContainerHeight),
             child: GoogleMap(
@@ -94,6 +67,8 @@ class _TripScreenState extends State<TripScreen> {
               mapType: MapType.normal,
               myLocationEnabled: true,
               myLocationButtonEnabled: false,
+              markers: markersSet,
+              polylines: polylineSet,
               compassEnabled: false,
               rotateGesturesEnabled: false,
               zoomGesturesEnabled: true,
@@ -102,7 +77,11 @@ class _TripScreenState extends State<TripScreen> {
                 _controllerGoogleMap.complete(controller);
                 newGoogleMapController = controller;
                 setGoogleMapThemeToBlack(newGoogleMapController!);
-                findDriverPosition();
+
+                var driverCurrentLatitudeAndLongitude = LatLng(driverCurrentPosition!.latitude, driverCurrentPosition!.longitude);
+                var passengerCurrentLatitudeAndLongitude = widget.passengerRideRequestInfo!.originLatitudeAndLongitude;
+
+                drawPolylineFromOriginToDestination(driverCurrentLatitudeAndLongitude, passengerCurrentLatitudeAndLongitude!);
               },
             ),
           ),
@@ -175,7 +154,7 @@ class _TripScreenState extends State<TripScreen> {
                         const Icon(
                           Icons.person_pin_circle_outlined,
                           size: AppSpaceValues.space4,
-                          color: AppColors.indigo7,
+                          color: AppColors.success5,
                         ),
 
                         const SizedBox(width: AppSpaceValues.space2),
@@ -186,7 +165,7 @@ class _TripScreenState extends State<TripScreen> {
                             SizedBox(
                               width: 325,
                               child: Text(
-                                'Passageiro ${widget.passengerRideRequestInfo!.passengerName}',
+                                '${AppStrings.passenger} ${widget.passengerRideRequestInfo!.passengerName}',
                                 softWrap: true,
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 1,
@@ -264,7 +243,8 @@ class _TripScreenState extends State<TripScreen> {
                     const SizedBox(height: AppSpaceValues.space4),
 
                     CustomButton(
-                      text: 'Passageiro recolhido',
+                      text: btnTitle!,
+                      backgroundColor: btnColor,
                       btnContentSize: AppFontSizes.m,
                       icon: Icons.person,
                       onPressed: () {
@@ -281,5 +261,91 @@ class _TripScreenState extends State<TripScreen> {
         ],
       ),
     );
+  }
+
+  /// ## Method responsible for tracing the polyline-based route when the passenger selects his destination.
+  ///
+  /// ### Step 1: When driver accepts the passenger's request.
+  /// 1. 'LatLng originLatitudeAndLongitude': Driver's position when trip is initiated.
+  /// 2. 'LatLng destinationLatitudeAndLongitude': Passenger's position when request is confirmed.
+  ///
+  /// ### Step 2: When driver picks the passenger up.
+  /// 1. 'LatLng originLatitudeAndLongitude': Driver's position when passenger is picked up.
+  /// 2. 'LatLng destinationLatitudeAndLongitude': Passenger's destination.
+  Future<void> drawPolylineFromOriginToDestination(LatLng originLatitudeAndLongitude, LatLng destinationLatitudeAndLongitude) async {
+    showDialog(context: context, builder: (BuildContext context) => ProgressDialog(message: AppStrings.loading3));
+
+    var directionRouteDetails = await AssistantMethods.obtainOriginToDestinationDirectionDetails(
+      originLatitudeAndLongitude, destinationLatitudeAndLongitude
+    );
+    setNavigatorPop();
+
+    PolylinePoints polylinePoints = PolylinePoints();
+    // The below 'List' only accepts 'LatLang' values!
+    List<PointLatLng> decodedPolylinePointsList = polylinePoints.decodePolyline(directionRouteDetails!.ePoints!);
+    polylineCoordinatesList.clear(); // Clearing previous polyline.
+
+    if(decodedPolylinePointsList.isNotEmpty) {
+      for (var pointLatLng in decodedPolylinePointsList) {
+        polylineCoordinatesList.add(LatLng(pointLatLng.latitude, pointLatLng.longitude));
+      }
+    }
+    polylineSet.clear();
+
+    setState(() {
+      Polyline polyline = Polyline(
+        polylineId: const PolylineId('polylineId'),
+        color: AppColors.indigo5,
+        jointType: JointType.round,
+        points: polylineCoordinatesList,
+        startCap: Cap.roundCap,
+        endCap: Cap.roundCap,
+        geodesic: true,
+      );
+      polylineSet.add(polyline);
+    });
+
+    // Conditions to better calibrate the camera so the user, when selecting his destination, can easily see the route in its entirety.
+    if(originLatitudeAndLongitude.latitude > destinationLatitudeAndLongitude.latitude
+        && originLatitudeAndLongitude.longitude > destinationLatitudeAndLongitude.longitude) {
+      latLngBounds = LatLngBounds(
+          southwest: destinationLatitudeAndLongitude,
+          northeast: originLatitudeAndLongitude
+      );
+    } else if(originLatitudeAndLongitude.longitude > destinationLatitudeAndLongitude.longitude) {
+      latLngBounds = LatLngBounds(
+        southwest: LatLng(originLatitudeAndLongitude.latitude, destinationLatitudeAndLongitude.longitude),
+        northeast: LatLng(destinationLatitudeAndLongitude.latitude, originLatitudeAndLongitude.longitude),
+      );
+    } else if(originLatitudeAndLongitude.latitude > destinationLatitudeAndLongitude.latitude) {
+      latLngBounds = LatLngBounds(
+        southwest: LatLng(destinationLatitudeAndLongitude.latitude, originLatitudeAndLongitude.longitude),
+        northeast: LatLng(originLatitudeAndLongitude.latitude, destinationLatitudeAndLongitude.longitude),
+      );
+    } else {
+      latLngBounds = LatLngBounds(
+          southwest: originLatitudeAndLongitude,
+          northeast: destinationLatitudeAndLongitude
+      );
+    }
+    // Adjusting camera for better displaying the polyline-based route:
+    newGoogleMapController!.animateCamera(CameraUpdate.newLatLngBounds(latLngBounds!, AppSpaceValues.space11));
+
+    Marker originMarker = Marker(
+      markerId: const MarkerId('originMarkerId'),
+      position: originLatitudeAndLongitude,
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
+    );
+
+    Marker destinationMarker = Marker(
+      markerId: const MarkerId('destinationMarkerId'),
+      position: destinationLatitudeAndLongitude,
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
+    );
+
+    setState(() {
+      markersSet.add(originMarker);
+      markersSet.add(destinationMarker);
+    });
   }
 }

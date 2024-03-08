@@ -7,6 +7,7 @@ class AppStrings {
   static const String createAccountButton = 'Criar conta';
   static const String loading = 'A processar. Aguarde...';
   static const String loading2 = 'Inicializando app...';
+  static const String loading3 = 'Por favor, aguarde...';
   static const String accountCreated = 'Conta criada com sucesso!';
   static const String carInfoSaved = 'Informações do carro guardadas.';
 
@@ -17,6 +18,7 @@ class AppStrings {
   static const String signUpError = 'Erro ao criar conta. Cheque sua conexão e tente novamente.';
   static const String rideRequestError = 'Erro ao receber as informações do pedido do passageiro.';
   static const String rideRequestDoesNotExistError = 'Erro ao receber o pedido do passageiro.';
+  static const String getDriverDataError = 'Erro ao tentar aceder às informações do motorista.';
 
   // 'signup_screen.dart'
   static const String welcomeMessage = 'Bem-vindo à PortuGO!';
@@ -80,6 +82,7 @@ class AppStrings {
   static const String acceptRequest = 'Aceitar corrida';
   static const String denyRequest = 'Recusar corrida';
   static const String rideRequestDeletedByPassenger = 'Este pedido de viagem não existe mais.';
+  static const String passenger = 'Passageiro';
 }
 
 class AppColors {
