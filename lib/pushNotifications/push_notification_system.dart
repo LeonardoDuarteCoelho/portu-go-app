@@ -12,6 +12,7 @@ import '../constants.dart';
 
 class PushNotificationSystem {
   FirebaseMessaging messaging = FirebaseMessaging.instance;
+  String? rideRequestId;
   double? originLatitude;
   double? originLongitude;
   String? originAddress;
@@ -64,6 +65,7 @@ class PushNotificationSystem {
     FirebaseDatabase.instance.ref().child('rideRequests').child(passengerRideRequestId).once().then((snapData) {
       if(snapData.snapshot.value != null) {
         // Getting the ride request information from the database:
+        rideRequestId = passengerRideRequestId;
         originLatitude = double.parse((snapData.snapshot.value! as Map)['origin']['latitude']);
         originLongitude = double.parse((snapData.snapshot.value! as Map)['origin']['longitude']);
         originAddress = (snapData.snapshot.value! as Map)['originAddress'];
@@ -76,6 +78,7 @@ class PushNotificationSystem {
 
         // Creating an object to store the ride request information:
         PassengerRideRequestInfo passengerRideRequestInfo = PassengerRideRequestInfo();
+        passengerRideRequestInfo.rideRequestId = rideRequestId;
         passengerRideRequestInfo.originLatitudeAndLongitude = LatLng(originLatitude!, originLongitude!);
         passengerRideRequestInfo.originAddress = originAddress;
         passengerRideRequestInfo.destinationLatitudeAndLongitude = LatLng(destinationLatitude!, destinationLongitude!);
@@ -83,8 +86,6 @@ class PushNotificationSystem {
         passengerRideRequestInfo.passengerId = passengerId;
         passengerRideRequestInfo.passengerName = passengerName;
         passengerRideRequestInfo.passengerPhone = passengerPhone;
-
-        print(passengerName);
 
         showDialog(
           context: context,

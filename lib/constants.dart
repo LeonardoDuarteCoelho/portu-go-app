@@ -16,6 +16,7 @@ class AppStrings {
   static const String accountNotCreatedError = 'Houve um problema ao criar sua conta. Tente criar novamente.';
   static const String signUpError = 'Erro ao criar conta. Cheque sua conexão e tente novamente.';
   static const String rideRequestError = 'Erro ao receber as informações do pedido do passageiro.';
+  static const String rideRequestDoesNotExistError = 'Erro ao receber o pedido do passageiro.';
 
   // 'signup_screen.dart'
   static const String welcomeMessage = 'Bem-vindo à PortuGO!';
@@ -78,6 +79,7 @@ class AppStrings {
   static const String destination = 'Destino';
   static const String acceptRequest = 'Aceitar corrida';
   static const String denyRequest = 'Recusar corrida';
+  static const String rideRequestDeletedByPassenger = 'Este pedido de viagem não existe mais.';
 }
 
 class AppColors {
@@ -91,9 +93,11 @@ class AppColors {
   static const Color whiteTransparent90 = Color(0xE6FFFFFF);
   static const Color whiteTransparent80 = Color(0xCCFFFFFF);
   static const Color whiteTransparent50 = Color(0x80FFFFFF);
+  static const Color whiteTransparent30 = Color(0x4DFFFFFF);
   static const Color transparent = Color(0x00000000);
 
-  static const Color success = Colors.green;
+  static const Color success3 = Color(0xFF81C784);
+  static const Color success5 = Color(0xFF4CAF50);
   static const Color error = Colors.red;
 
   // Themed colors:

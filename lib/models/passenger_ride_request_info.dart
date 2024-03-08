@@ -1,6 +1,7 @@
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class PassengerRideRequestInfo {
+  String? rideRequestId;
   LatLng? originLatitudeAndLongitude;
   String? originAddress;
   LatLng? destinationLatitudeAndLongitude;
@@ -10,6 +11,7 @@ class PassengerRideRequestInfo {
   String? passengerPhone;
 
   PassengerRideRequestInfo({
+    this.rideRequestId,
     this.originLatitudeAndLongitude,
     this.originAddress,
     this.destinationLatitudeAndLongitude,

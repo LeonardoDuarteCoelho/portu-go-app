@@ -10,4 +10,4 @@ User? currentFirebaseUser;
 DriverModel? driverModelCurrentInfo;
 StreamSubscription<Position>? streamSubscriptionPosition;
 bool ifDriverIsActive = false; // Check if driver is on offline mode.
-
+bool ifDarkThemeIsActive = false;

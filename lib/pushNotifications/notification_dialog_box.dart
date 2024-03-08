@@ -1,6 +1,10 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:portu_go_driver/components/button.dart';
 import 'package:portu_go_driver/constants.dart';
+import 'package:portu_go_driver/global/global.dart';
+import 'package:portu_go_driver/mainScreens/trip_screen.dart';
 import 'package:portu_go_driver/models/passenger_ride_request_info.dart';
 
 class NotificationDialogBox extends StatefulWidget {
@@ -12,6 +16,8 @@ class NotificationDialogBox extends StatefulWidget {
 }
 
 class _NotificationDialogBoxState extends State<NotificationDialogBox> {
+  String rideRequestId = '';
+
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -58,7 +64,7 @@ class _NotificationDialogBoxState extends State<NotificationDialogBox> {
                           Icon(
                             Icons.location_history_sharp,
                             size: AppSpaceValues.space4,
-                            color: AppColors.indigo7,
+                            color: AppColors.indigo9,
                           ),
 
                           SizedBox(width: AppSpaceValues.space1),
@@ -136,12 +142,12 @@ class _NotificationDialogBoxState extends State<NotificationDialogBox> {
                 children: [
                   CustomButton(
                     text: AppStrings.acceptRequest,
-                    backgroundColor: AppColors.success,
+                    backgroundColor: AppColors.success5,
                     textColor: AppColors.white,
                     icon: Icons.check,
                     btnContentSize: AppFontSizes.ml,
                     onPressed: () {
-
+                      acceptRideRequest(context);
                     }
                   ),
 
@@ -164,5 +170,26 @@ class _NotificationDialogBoxState extends State<NotificationDialogBox> {
         ),
       ),
     );
+  }
+
+  acceptRideRequest(BuildContext context) {
+    FirebaseDatabase.instance.ref().child('drivers').child(currentFirebaseUser!.uid)
+    .child('newRideStatus').once().then((snap) {
+      if(snap.snapshot.value != null) {
+        rideRequestId = snap.snapshot.value.toString();
+      } else {
+        Fluttertoast.showToast(msg: AppStrings.rideRequestDoesNotExistError);
+      }
+      if(rideRequestId == widget.passengerRideRequestInfo!.rideRequestId) {
+        FirebaseDatabase.instance.ref().child('drivers').child(currentFirebaseUser!.uid)
+        .child('newRideStatus').set('busy');
+        // Going to the trip screen with the ride request info:
+        Navigator.push(context, MaterialPageRoute(
+          builder: (c) => TripScreen(passengerRideRequestInfo : widget.passengerRideRequestInfo)
+        ));
+      } else {
+        Fluttertoast.showToast(msg: AppStrings.rideRequestDeletedByPassenger);
+      }
+    });
   }
 }
