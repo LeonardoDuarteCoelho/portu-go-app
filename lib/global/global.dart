@@ -6,7 +6,6 @@ import 'package:portu_go_driver/models/driver_model.dart';
 
 final FirebaseAuth fAuth = FirebaseAuth.instance;
 User? currentFirebaseUser;
-// TODO: Check if this really has an use --> DriverModel? driverModelCurrentInfo;
 StreamSubscription<Position>? streamSubscriptionPosition;
 bool ifDriverIsActive = false; // Check if driver is on offline mode.
 bool ifDarkThemeIsActive = false;

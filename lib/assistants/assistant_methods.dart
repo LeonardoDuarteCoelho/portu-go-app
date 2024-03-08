@@ -38,21 +38,6 @@ class AssistantMethods {
     }
     return humanReadableAddress;
   }
-  /* TODO: Check if this really has an use.
-  static void getCurrentOnlineDriverInfo() async {
-    currentFirebaseUser = fAuth.currentUser;
-    DatabaseReference driversRef = FirebaseDatabase
-    .instance
-    .ref()
-    .child("drivers")
-    .child(currentFirebaseUser!.uid);
-    driversRef.once().then((snap) {
-      if(snap.snapshot.value != null) {
-        driverModelCurrentInfo = DriverModel.fromSnapshot(snap.snapshot);
-      }
-    });
-  }
-  */
 
   static Future<DirectionRouteDetails?> obtainOriginToDestinationDirectionDetails(LatLng originPosition, LatLng destinationPosition) async {
     String urlOriginToDestinationDirectionDetails = 'https://maps.googleapis.com/maps/api/directions/json?origin=${originPosition.latitude},${originPosition.longitude}&destination=${destinationPosition.latitude},${destinationPosition.longitude}&key=$mapKey';

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
@@ -49,6 +50,16 @@ class _TripScreenState extends State<TripScreen> {
   List<LatLng> polylineCoordinatesList = [];
   PolylinePoints polylinePoints = PolylinePoints();
   LatLngBounds? latLngBounds;
+  DatabaseReference? rideRequestRef;
+  Map? driverLocationDataMap;
+  Map? driverCarInfoMap;
+  DatabaseReference? driverTripsHistoryRef;
+
+  @override
+  void initState() {
+    super.initState();
+    saveAssignedDriverDataToRideRequest();
+  }
 
   setNavigatorPop() {
     Navigator.pop(context);
@@ -347,5 +358,34 @@ class _TripScreenState extends State<TripScreen> {
       markersSet.add(originMarker);
       markersSet.add(destinationMarker);
     });
+  }
+
+  /// Saving assigned driver's data to the Realtime Database.
+  saveAssignedDriverDataToRideRequest() {
+    rideRequestRef = FirebaseDatabase.instance.ref().child('rideRequests').child(widget.passengerRideRequestInfo!.rideRequestId!);
+    driverLocationDataMap = {
+      "latitude": driverCurrentPosition!.latitude.toString(),
+      "longitude": driverCurrentPosition!.longitude.toString(),
+    };
+    driverCarInfoMap = {
+      'carColor': driverData.carColor!,
+      'carModel': driverData.carModel!,
+      'carNumber': driverData.carNumber!,
+      'carType': driverData.carType!,
+    };
+
+    rideRequestRef?.child('driverLocation').set(driverLocationDataMap);
+    rideRequestRef?.child('status').set('accepted');
+    rideRequestRef?.child('driverId').set(driverData.id);
+    rideRequestRef?.child('driverName').set(driverData.name);
+    rideRequestRef?.child('driverPhone').set(driverData.phone);
+    rideRequestRef?.child('driverCarInfo').set(driverCarInfoMap);
+    saveRideRequestDataToTheRecords();
+  }
+
+  /// Saving data of all trips the driver had.
+  saveRideRequestDataToTheRecords() {
+    DatabaseReference driverTripsHistoryRef = FirebaseDatabase.instance.ref().child('drivers').child(currentFirebaseUser!.uid).child('tripsHistory');
+    driverTripsHistoryRef.child(widget.passengerRideRequestInfo!.rideRequestId!).set(true);
   }
 }
