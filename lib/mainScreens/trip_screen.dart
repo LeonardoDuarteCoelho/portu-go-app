@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_geofire/flutter_geofire.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -40,7 +41,6 @@ class _TripScreenState extends State<TripScreen> {
   Position? geolocatorPosition;
   LatLng? latitudeAndLongitudePosition;
   CameraPosition? cameraPosition;
-  var geolocator = Geolocator();
   final Completer<GoogleMapController> _controllerGoogleMap = Completer<GoogleMapController>();
   GoogleMapController? newGoogleMapController;
   String? btnTitle = 'Passageiro recolhido';
@@ -54,6 +54,12 @@ class _TripScreenState extends State<TripScreen> {
   Map? driverLocationDataMap;
   Map? driverCarInfoMap;
   DatabaseReference? driverTripsHistoryRef;
+  BitmapDescriptor? animatedIconMarker;
+  var geolocator = Geolocator();
+  LatLng? driverLatitudeAndLongitudeDuringTrip;
+  Position? driverCurrentPositionDuringTrip;
+  CameraPosition? driverCameraPositionDuringTrip;
+  Marker? liveMarkerDuringTrip;
 
   @override
   void initState() {
@@ -67,9 +73,12 @@ class _TripScreenState extends State<TripScreen> {
 
   @override
   Widget build(BuildContext context) {
+    createDriverMarker();
+
     return Scaffold(
       body: Stack(
         children: [
+
           // Google Map:
           Padding(
             padding: EdgeInsets.only(bottom: tripInfoContainerHeight),
@@ -93,6 +102,7 @@ class _TripScreenState extends State<TripScreen> {
                 var passengerCurrentLatitudeAndLongitude = widget.passengerRideRequestInfo!.originLatitudeAndLongitude;
 
                 drawPolylineFromOriginToDestination(driverCurrentLatitudeAndLongitude, passengerCurrentLatitudeAndLongitude!);
+                updateDriversLocationInRealtimeDuringTrip();
               },
             ),
           ),
@@ -269,6 +279,7 @@ class _TripScreenState extends State<TripScreen> {
               ),
             ),
           ),
+
         ],
       ),
     );
@@ -387,5 +398,54 @@ class _TripScreenState extends State<TripScreen> {
   saveRideRequestDataToTheRecords() {
     DatabaseReference driverTripsHistoryRef = FirebaseDatabase.instance.ref().child('drivers').child(currentFirebaseUser!.uid).child('tripsHistory');
     driverTripsHistoryRef.child(widget.passengerRideRequestInfo!.rideRequestId!).set(true);
+  }
+
+  createDriverMarker() {
+    if(animatedIconMarker == null) {
+      ImageConfiguration imageConfiguration = createLocalImageConfiguration(context, size: const Size(2, 2)); // Size for the available driver icon.
+      BitmapDescriptor.fromAssetImage(imageConfiguration, 'images/car.png').then((value) {
+        animatedIconMarker = value;
+      });
+    }
+  }
+
+  updateDriversLocationInRealtimeDuringTrip() {
+    streamSubscriptionPositionTripScreen = Geolocator.getPositionStream().listen((Position position) {
+      // Getting driver position to this global variable (used by 'home_screen.dart'),
+      // allowing the home screen to also get updated about the driver's current position:
+      driverCurrentPosition = position;
+      // Getting driver position to this local variable:
+      driverCurrentPositionDuringTrip = driverCurrentPosition;
+
+      /* TODO: Check if this condition is necessary.
+      if(ifDriverIsActive) {
+        Geofire.setLocation(
+          currentFirebaseUser!.uid,
+          driverCurrentPositionDuringTrip!.latitude,
+          driverCurrentPositionDuringTrip!.longitude
+        );
+      }
+      */
+
+      // Updating the latitude and longitude coordinates:
+      driverLatitudeAndLongitudeDuringTrip = LatLng(driverCurrentPositionDuringTrip!.latitude, driverCurrentPositionDuringTrip!.longitude);
+
+      // Setting a live marker to follow the driver's location during the trip:
+      liveMarkerDuringTrip = Marker(
+        markerId: const MarkerId('liveMarkerDuringTripId'),
+        position: driverLatitudeAndLongitudeDuringTrip!,
+        icon: animatedIconMarker!,
+        infoWindow: const InfoWindow(title: 'Sua posição actual'),
+      );
+
+      // Animating camera to follow the driver's live location during the trip:
+      setState(() {
+        driverCameraPositionDuringTrip = CameraPosition(target: driverLatitudeAndLongitudeDuringTrip!, zoom: 17);
+        newGoogleMapController!.animateCamera(CameraUpdate.newCameraPosition(driverCameraPositionDuringTrip!));
+        // Self-updating marker:
+        markersSet.removeWhere((marker) => marker.markerId.value == 'liveMarkerDuringTripId'); // Removes old marker.
+        markersSet.add(liveMarkerDuringTrip!); // Adds new marker with updated driver location.
+      });
+    });
   }
 }

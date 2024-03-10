@@ -1,6 +1,7 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:portu_go_driver/assistants/assistant_methods.dart';
 import 'package:portu_go_driver/components/button.dart';
 import 'package:portu_go_driver/constants.dart';
 import 'package:portu_go_driver/global/global.dart';
@@ -181,8 +182,9 @@ class _NotificationDialogBoxState extends State<NotificationDialogBox> {
         Fluttertoast.showToast(msg: AppStrings.rideRequestDoesNotExistError);
       }
       if(rideRequestId == widget.passengerRideRequestInfo!.rideRequestId) {
-        FirebaseDatabase.instance.ref().child('drivers').child(currentFirebaseUser!.uid)
-        .child('newRideStatus').set('busy');
+        FirebaseDatabase.instance.ref().child('drivers').child(currentFirebaseUser!.uid).child('newRideStatus').set('busy');
+        // Stop live location tracking of the driver's position:
+        AssistantMethods.pauseLiveLocationUpdates();
         // Going to the trip screen with the ride request info:
         Navigator.push(context, MaterialPageRoute(
           builder: (c) => TripScreen(passengerRideRequestInfo : widget.passengerRideRequestInfo)

@@ -42,7 +42,6 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
   Position? geolocatorPosition;
   LatLng? latitudeAndLongitudePosition;
   CameraPosition? cameraPosition;
-  var geolocator = Geolocator();
   final Completer<GoogleMapController> _controllerGoogleMap = Completer<GoogleMapController>();
   GoogleMapController? newGoogleMapController;
   DatabaseReference? driversStatusRef;
@@ -282,13 +281,20 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
   }
 
   updateDriversLocationInRealtime() {
-    LatLng latLng; // Auxiliary variable
+    LatLng latLng; // Auxiliary variable.
 
-    streamSubscriptionPosition = Geolocator.getPositionStream().listen((Position position) {
+    streamSubscriptionPositionHomeScreen = Geolocator.getPositionStream().listen((Position position) {
       driverCurrentPosition = position;
-      if(ifDriverIsActive) Geofire.setLocation(currentFirebaseUser!.uid, driverCurrentPosition!.latitude, driverCurrentPosition!.longitude);
+
+      if(ifDriverIsActive) {
+        Geofire.setLocation(
+          currentFirebaseUser!.uid,
+          driverCurrentPosition!.latitude,
+          driverCurrentPosition!.longitude
+        );
+      }
+
       latLng = LatLng(driverCurrentPosition!.latitude, driverCurrentPosition!.longitude);
-      newGoogleMapController!.animateCamera(CameraUpdate.newLatLng(latLng));
     });
   }
 }

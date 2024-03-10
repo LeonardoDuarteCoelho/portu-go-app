@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter_geofire/flutter_geofire.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart';
@@ -55,5 +56,17 @@ class AssistantMethods {
     directionRouteDetails.durationValue = responseDirectionsApi['routes'][0]['legs'][0]['duration']['value'];
 
     return directionRouteDetails;
+  }
+
+  /// Pauses live location updates for the home screen.
+  static pauseLiveLocationUpdates() {
+    streamSubscriptionPositionHomeScreen!.pause();
+    Geofire.removeLocation(currentFirebaseUser!.uid);
+  }
+
+  /// Starts/Resumes live location updates for the home screen.
+  static startLiveLocationUpdates() {
+    streamSubscriptionPositionHomeScreen!.resume();
+    Geofire.setLocation(currentFirebaseUser!.uid, driverCurrentPosition!.latitude, driverCurrentPosition!.longitude);
   }
 }
