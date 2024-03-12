@@ -19,6 +19,8 @@ class PushNotificationSystem {
   double? destinationLatitude;
   double? destinationLongitude;
   String? destinationAddress;
+  String? originToDestinationDistance;
+  String? originToDestinationDuration;
   String? passengerId;
   String? passengerName;
   String? passengerPhone;
@@ -72,6 +74,8 @@ class PushNotificationSystem {
         destinationLatitude = double.parse((snapData.snapshot.value! as Map)['destination']['latitude']);
         destinationLongitude = double.parse((snapData.snapshot.value! as Map)['destination']['longitude']);
         destinationAddress = (snapData.snapshot.value! as Map)['destinationAddress'];
+        originToDestinationDistance = (snapData.snapshot.value! as Map)['originToDestinationDistance'];
+        originToDestinationDuration = (snapData.snapshot.value! as Map)['originToDestinationDuration'];
         passengerId = (snapData.snapshot.value! as Map)['passengerId'];
         passengerName = (snapData.snapshot.value! as Map)['passengerName'];
         passengerPhone = (snapData.snapshot.value! as Map)['passengerPhone'];
@@ -83,6 +87,8 @@ class PushNotificationSystem {
         passengerRideRequestInfo.originAddress = originAddress;
         passengerRideRequestInfo.destinationLatitudeAndLongitude = LatLng(destinationLatitude!, destinationLongitude!);
         passengerRideRequestInfo.destinationAddress = destinationAddress;
+        passengerRideRequestInfo.originToDestinationDistance = originToDestinationDistance;
+        passengerRideRequestInfo.originToDestinationDuration = originToDestinationDuration;
         passengerRideRequestInfo.passengerId = passengerId;
         passengerRideRequestInfo.passengerName = passengerName;
         passengerRideRequestInfo.passengerPhone = passengerPhone;

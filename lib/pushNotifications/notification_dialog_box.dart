@@ -38,7 +38,7 @@ class _NotificationDialogBoxState extends State<NotificationDialogBox> {
           padding: const EdgeInsets.all(AppSpaceValues.space3),
           child: Column(
             children: [
-              Image.asset('images/ic-car-flat.png', width: 125),
+              Image.asset('images/ic-car-flat.png', width: 100),
 
               const SizedBox(height: AppSpaceValues.space2),
 
@@ -83,12 +83,18 @@ class _NotificationDialogBoxState extends State<NotificationDialogBox> {
 
                       const SizedBox(height: AppSpaceValues.space1),
 
-                      Text(
-                        widget.passengerRideRequestInfo!.originAddress!,
-                        style: const TextStyle(
-                          fontWeight: AppFontWeights.regular,
-                          fontSize: AppFontSizes.ml,
-                          color: AppColors.gray9,
+                      SizedBox(
+                        width: 300,
+                        child: Text(
+                          widget.passengerRideRequestInfo!.originAddress!,
+                          softWrap: true,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
+                          style: const TextStyle(
+                            fontWeight: AppFontWeights.regular,
+                            fontSize: AppFontSizes.ml,
+                            color: AppColors.gray9,
+                          ),
                         ),
                       ),
                     ],
@@ -99,19 +105,19 @@ class _NotificationDialogBoxState extends State<NotificationDialogBox> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Row(
+                      Row(
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.location_on_sharp,
                             size: AppSpaceValues.space4,
                             color: AppColors.error,
                           ),
 
-                          SizedBox(width: AppSpaceValues.space1),
+                          const SizedBox(width: AppSpaceValues.space1),
 
                           Text(
-                            '${AppStrings.destination}:',
-                            style: TextStyle(
+                            '${AppStrings.destination} (${widget.passengerRideRequestInfo!.originToDestinationDistance}):',
+                            style: const TextStyle(
                               fontWeight: AppFontWeights.semiBold,
                               fontSize: AppFontSizes.ml,
                               color: AppColors.gray9,
@@ -122,12 +128,18 @@ class _NotificationDialogBoxState extends State<NotificationDialogBox> {
 
                       const SizedBox(height: AppSpaceValues.space1),
 
-                      Text(
-                        widget.passengerRideRequestInfo!.destinationAddress!,
-                        style: const TextStyle(
-                          fontWeight: AppFontWeights.regular,
-                          fontSize: AppFontSizes.ml,
-                          color: AppColors.gray9,
+                      SizedBox(
+                        width: 300,
+                        child: Text(
+                          widget.passengerRideRequestInfo!.destinationAddress!,
+                          softWrap: true,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
+                          style: const TextStyle(
+                            fontWeight: AppFontWeights.regular,
+                            fontSize: AppFontSizes.ml,
+                            color: AppColors.gray9,
+                          ),
                         ),
                       ),
                     ],
@@ -137,7 +149,7 @@ class _NotificationDialogBoxState extends State<NotificationDialogBox> {
 
               const SizedBox(height: AppSpaceValues.space2),
               const Divider(height: 1, thickness: 1, color: AppColors.gray5),
-              const SizedBox(height: AppSpaceValues.space5),
+              const SizedBox(height: AppSpaceValues.space4),
 
               Column(
                 children: [
@@ -146,20 +158,20 @@ class _NotificationDialogBoxState extends State<NotificationDialogBox> {
                     backgroundColor: AppColors.success5,
                     textColor: AppColors.white,
                     icon: Icons.check,
-                    btnContentSize: AppFontSizes.ml,
+                    btnContentSize: AppFontSizes.m,
                     onPressed: () {
                       acceptRideRequest(context);
                     }
                   ),
 
-                  const SizedBox(height: AppSpaceValues.space4),
+                  const SizedBox(height: AppSpaceValues.space3),
 
                   CustomButton(
                       text: AppStrings.denyRequest,
                       backgroundColor: AppColors.error,
                       textColor: AppColors.white,
                       icon: Icons.close,
-                      btnContentSize: AppFontSizes.ml,
+                      btnContentSize: AppFontSizes.m,
                       onPressed: () {
                         Navigator.pop(context);
                       }

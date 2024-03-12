@@ -4,12 +4,15 @@ class AppStrings {
   // General strings
   static const String empty = '';
   static const String ptCountryCode = '+351';
+  static const String euroSymbol = '€';
   static const String createAccountButton = 'Criar conta';
   static const String loading = 'A processar. Aguarde...';
   static const String loading2 = 'Inicializando app...';
   static const String loading3 = 'Por favor, aguarde...';
   static const String accountCreated = 'Conta criada com sucesso!';
   static const String carInfoSaved = 'Informações do carro guardadas.';
+  static const String primeCarType = 'Prime';
+  static const String goCarType = 'GO';
 
   // Error strings
   /// This string is integral for the connections between APIs and the app (Check 'assistant_methods.dart'). Be mindful when editing it.
@@ -82,7 +85,18 @@ class AppStrings {
   static const String acceptRequest = 'Aceitar corrida';
   static const String denyRequest = 'Recusar corrida';
   static const String rideRequestDeletedByPassenger = 'Este pedido de viagem não existe mais.';
-  static const String passenger = 'Passageiro';
+
+  // 'trip_screen.dart'
+  static const String passengerLocation = 'Local do passageiro';
+  static const String destinationOf = 'Destino de';
+  static const String passengerPickedUp = 'Passageiro recolhido';
+  static const String startTrip = 'Começar corrida';
+  static const String endTrip = 'Terminar viagem';
+  static const String endTrip2 = 'Encerrar corrida';
+
+  // 'fare_amount_collection_dialog.dart'
+  static const String niceEarningText = 'Boa! Ganhaste...';
+  static const String collectMoney = 'Coletar dinheiro';
 }
 
 class AppColors {
@@ -135,6 +149,7 @@ class AppFontFamilies {
 }
 
 class AppFontSizes {
+  static const double xxxxl = 72;
   static const double xxxl = 56;
   static const double xxl = 40;
   static const double xl = 32;

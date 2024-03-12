@@ -12,4 +12,5 @@ bool ifDriverIsActive = false; // Check if driver is on offline mode.
 bool ifDarkThemeIsActive = true;
 Position? driverCurrentPosition;
 DriverModel driverData = DriverModel();
+String? driverVehicleType = '';
 

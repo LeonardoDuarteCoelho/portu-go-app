@@ -6,6 +6,8 @@ class PassengerRideRequestInfo {
   String? originAddress;
   LatLng? destinationLatitudeAndLongitude;
   String? destinationAddress;
+  String? originToDestinationDistance;
+  String? originToDestinationDuration;
   String? passengerId;
   String? passengerName;
   String? passengerPhone;
@@ -16,6 +18,8 @@ class PassengerRideRequestInfo {
     this.originAddress,
     this.destinationLatitudeAndLongitude,
     this.destinationAddress,
+    this.originToDestinationDistance,
+    this.originToDestinationDuration,
     this.passengerId,
     this.passengerName,
     this.passengerPhone

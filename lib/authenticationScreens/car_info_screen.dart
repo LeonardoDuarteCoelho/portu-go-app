@@ -29,12 +29,12 @@ class _CarInfoScreenState extends State<CarInfoScreen> {
 
   // Car types for the driver to choose:
   List<String> carTypesList = [
-    'Prime', // For SUVs or minivans; minimum of 6 seats and lots os space for baggage.
-    'GO', // PortuGO's standard ride; 2 to 4 seats and may or may not have a trunk.
+    AppStrings.primeCarType, // For SUVs or minivans; minimum of 6 seats and lots os space for baggage.
+    AppStrings.goCarType, // PortuGO's standard ride; 2 to 4 seats and may or may not have a trunk.
   ];
   Map<String, String> carTypeExplanations = {
-    'Prime': AppStrings.carPrimeExplanation,
-    'GO': AppStrings.carGoExplanation,
+    AppStrings.primeCarType: AppStrings.carPrimeExplanation,
+    AppStrings.goCarType: AppStrings.carGoExplanation,
   };
   String? selectedCarType;
 

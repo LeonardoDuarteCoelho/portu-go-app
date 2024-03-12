@@ -194,6 +194,7 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
                 heroTag: 'my_location',
                 backgroundColor: AppColors.indigo7,
                 onPressed: () {
+                  findDriverPosition();
                   newGoogleMapController?.animateCamera(CameraUpdate.newCameraPosition(cameraPosition!));
                 },
                 child: const Icon(
