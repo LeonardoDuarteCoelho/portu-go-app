@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:portu_go_driver/components/button.dart';
 import 'package:portu_go_driver/constants.dart';
+import 'package:restart_app/restart_app.dart';
+
+import '../splashScreen/splash_screen.dart';
 
 class FareAmountCollectionDialog extends StatefulWidget {
   double? tripPrice;
@@ -75,9 +79,8 @@ class _FareAmountCollectionDialogState extends State<FareAmountCollectionDialog>
                 backgroundColor: AppColors.success3,
                 textColor: AppColors.black,
                 onPressed: () {
-                  Future.delayed(const Duration(seconds: 2), () {
-                    SystemNavigator.pop();
-                  });
+                  Fluttertoast.showToast(msg: AppStrings.moneyEarnedSuccessfully);
+                  Navigator.push(context, MaterialPageRoute(builder: (c) => const SplashScreen()));
                 }
               ),
             ],

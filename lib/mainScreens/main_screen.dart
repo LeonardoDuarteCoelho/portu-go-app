@@ -6,6 +6,8 @@ import 'package:portu_go_driver/tabScreens/profile_screen.dart';
 import 'package:portu_go_driver/tabScreens/ratings_screen.dart';
 
 class MainScreen extends StatefulWidget {
+  const MainScreen({super.key});
+
   @override
   State<MainScreen> createState() => _MainScreenState();
 }

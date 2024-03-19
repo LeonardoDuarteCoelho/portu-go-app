@@ -30,17 +30,11 @@ class TripScreen extends StatefulWidget {
 class _TripScreenState extends State<TripScreen> {
   @override
   bool get wantKeepAlive => true;
-  String driverName = '';
-  String driverEmail = '';
-  String driverPhone = '';
   double tripInfoContainerHeight = 240; // Trip info panel's height.
   static const CameraPosition _dummyLocation = CameraPosition(
     target: LatLng(0, 0), // Placeholder location when app's still locating user.
     zoom: 17,
   );
-  Position? geolocatorPosition;
-  LatLng? latitudeAndLongitudePosition;
-  CameraPosition? cameraPosition;
   final Completer<GoogleMapController> _controllerGoogleMap = Completer<GoogleMapController>();
   GoogleMapController? newGoogleMapController;
   String? btnTitle = AppStrings.passengerPickedUp;
@@ -49,7 +43,6 @@ class _TripScreenState extends State<TripScreen> {
   Set<Marker> markersSet = Set<Marker>();
   Set<Polyline> polylineSet = Set<Polyline>();
   List<LatLng> polylineCoordinatesList = [];
-  PolylinePoints polylinePoints = PolylinePoints();
   LatLngBounds? latLngBounds;
   DatabaseReference? rideRequestRef;
   Map? driverLocationDataMap;
@@ -66,7 +59,8 @@ class _TripScreenState extends State<TripScreen> {
   String tripDurationFromOriginToDestination = '';
   LatLng? originLatitudeAndLongitudeDuringTrip;
   LatLng? destinationLatitudeAndLongitudeDuringTrip;
-  DirectionRouteDetails? directionDetailsDuringTrip;
+  DirectionRouteDetails? directionDetailsDuringTrip; // From origin to destination.
+  DirectionRouteDetails? driverToPassengerDirectionDetails; // From driver to passenger.
   bool showDirectionRouteDetails = false;
   Map driverLatitudeAndLongitudeDuringTripDataMap = {};
   LatLng? driverLatitudeAndLongitudeWhenTripEnded;
@@ -74,6 +68,7 @@ class _TripScreenState extends State<TripScreen> {
   double tripPrice = 0;
   double? driverEarningsBeforeTrip;
   double? driverEarningsAfterTrip;
+  Map? passengerInfoMap;
 
   @override
   void initState() {
@@ -173,6 +168,10 @@ class _TripScreenState extends State<TripScreen> {
 
   /// Saving assigned driver's data to the Realtime Database.
   saveAssignedDriverDataToRideRequest() {
+    // Reset trip price and set initial trip state
+    tripPrice = 0; // Reset trip price
+    rideRequestStatus = 'accepted'; // Reset the trip status
+
     rideRequestRef = FirebaseDatabase.instance.ref().child('rideRequests').child(widget.passengerRideRequestInfo!.rideRequestId!);
     driverLocationDataMap = {
       'latitude': driverCurrentPosition!.latitude.toString(),
@@ -191,13 +190,6 @@ class _TripScreenState extends State<TripScreen> {
     rideRequestRef?.child('driverName').set(driverData.name);
     rideRequestRef?.child('driverPhone').set(driverData.phone);
     rideRequestRef?.child('driverCarInfo').set(driverCarInfoMap);
-    saveRideRequestDataToTheRecords();
-  }
-
-  /// Saving data of all trips the driver had.
-  saveRideRequestDataToTheRecords() {
-    DatabaseReference driverTripsHistoryRef = FirebaseDatabase.instance.ref().child('drivers').child(currentFirebaseUser!.uid).child('tripsHistory');
-    driverTripsHistoryRef.child(widget.passengerRideRequestInfo!.rideRequestId!).set(true);
   }
 
   createDriverMarker() {
@@ -228,7 +220,11 @@ class _TripScreenState extends State<TripScreen> {
 
       // Animating camera to follow the driver's live location during the trip:
       setState(() {
-        driverCameraPositionDuringTrip = CameraPosition(target: driverLatitudeAndLongitudeDuringTrip!, zoom: 17);
+        driverCameraPositionDuringTrip = CameraPosition(
+            target: driverLatitudeAndLongitudeDuringTrip!,
+            bearing: driverCurrentPositionDuringTrip!.heading,
+            zoom: 17,
+        );
         newGoogleMapController!.animateCamera(CameraUpdate.newCameraPosition(driverCameraPositionDuringTrip!));
         // Self-updating marker:
         markersSet.removeWhere((marker) => marker.markerId.value == 'liveMarkerDuringTripId'); // Removes old marker.
@@ -245,6 +241,7 @@ class _TripScreenState extends State<TripScreen> {
         'latitude': driverCurrentPositionDuringTrip!.latitude.toString(),
         'longitude': driverCurrentPositionDuringTrip!.longitude.toString(),
       };
+      // Saving to the database the live position of the driver during the trip:
       FirebaseDatabase.instance.ref().child('rideRequests').child(widget.passengerRideRequestInfo!.rideRequestId!)
       .child('driverLocation').set(driverLatitudeAndLongitudeDuringTripDataMap);
     });
@@ -412,7 +409,7 @@ class _TripScreenState extends State<TripScreen> {
                         const SizedBox(width: AppSpaceValues.space1),
 
                         Text(
-                          widget.passengerRideRequestInfo!.originToDestinationDuration!,
+                          tripDurationFromOriginToDestination,
                           style: const TextStyle(
                             color: AppColors.gray9,
                             fontSize: AppFontSizes.m,
@@ -450,9 +447,9 @@ class _TripScreenState extends State<TripScreen> {
 
   endTrip() async {
     showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) => ProgressDialog(message: AppStrings.loading3),
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) => ProgressDialog(message: AppStrings.loading3),
     );
     // Getting the latitude and longitude when trip ends:
     driverLatitudeAndLongitudeWhenTripEnded = LatLng(
@@ -497,11 +494,11 @@ class _TripScreenState extends State<TripScreen> {
         driverEarningsAfterTrip = fareAmountEarned + driverEarningsBeforeTrip!;
         // Saving this to the database:
         FirebaseDatabase.instance.ref().child('drivers').child(currentFirebaseUser!.uid)
-        .child('earnings').set(driverEarningsAfterTrip.toString());
+        .child('earnings').set(driverEarningsAfterTrip!.toStringAsFixed(2));
 
       } else { // If it doesn't exist, create a new sub-child...
         FirebaseDatabase.instance.ref().child('drivers').child(currentFirebaseUser!.uid)
-        .child('earnings').set(fareAmountEarned.toString());
+        .child('earnings').set(fareAmountEarned.toStringAsFixed(2));
       }
     });
   }

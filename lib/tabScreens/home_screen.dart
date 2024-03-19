@@ -89,11 +89,13 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
     cameraPosition = CameraPosition(
         target: latitudeAndLongitudePosition!,
         bearing: driverCurrentPosition!.heading,
-        zoom: 17
+        zoom: 17,
     );
     // Updating camera position:
     newGoogleMapController?.animateCamera(CameraUpdate.newCameraPosition(cameraPosition!));
     getHumanReadableAddress();
+    AssistantMethods.readDriverEarnings(context);
+    AssistantMethods.readDriverRatings(context);
   }
 
   readCurrentDriverInfo() async {
@@ -115,6 +117,8 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
     PushNotificationSystem pushNotificationSystem = PushNotificationSystem();
     pushNotificationSystem.initializeCloudMessaging(context);
     pushNotificationSystem.generateToken();
+    AssistantMethods.readDriverEarnings(context);
+    AssistantMethods.readDriverRatings(context);
   }
 
   @override
@@ -141,69 +145,6 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
             setGoogleMapThemeToBlack(newGoogleMapController!);
             findDriverPosition();
           },
-        ),
-
-        // Left-screen controls:
-        Positioned(
-          left: AppSpaceValues.space2,
-          bottom: mapControlsContainerHeight,
-          child: Column(
-            children: [
-              // Zoom-in button:
-              FloatingActionButton(
-                mini: true,
-                heroTag: 'zoom_in',
-                backgroundColor: AppColors.indigo7,
-                onPressed: () {
-                  newGoogleMapController?.animateCamera(CameraUpdate.zoomIn());
-                },
-                child: const Icon(
-                  Icons.add,
-                  color: AppColors.white,
-                ),
-              ),
-
-              const SizedBox(height: AppSpaceValues.space1),
-
-              // Zoom-out button:
-              FloatingActionButton(
-                mini: true,
-                heroTag: 'zoom_out',
-                backgroundColor: AppColors.indigo7,
-                onPressed: () {
-                  newGoogleMapController?.animateCamera(CameraUpdate.zoomOut());
-                },
-                child: const Icon(
-                  Icons.remove,
-                  color: AppColors.white,
-                ),
-              ),
-            ],
-          ),
-        ),
-
-        // Right-screen controls:
-        Positioned(
-          right: AppSpaceValues.space2,
-          bottom: mapControlsContainerHeight,
-          child: Column(
-            children: [
-              // My location button:
-              FloatingActionButton(
-                mini: true,
-                heroTag: 'my_location',
-                backgroundColor: AppColors.indigo7,
-                onPressed: () {
-                  findDriverPosition();
-                  newGoogleMapController?.animateCamera(CameraUpdate.newCameraPosition(cameraPosition!));
-                },
-                child: const Icon(
-                  Icons.my_location,
-                  color: AppColors.white,
-                ),
-              ),
-            ],
-          ),
         ),
 
 /********************************************** UI FOR DRIVER BEING OFFLINE **********************************************/
@@ -295,7 +236,9 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
         );
       }
 
+      findDriverPosition();
       latLng = LatLng(driverCurrentPosition!.latitude, driverCurrentPosition!.longitude);
+      newGoogleMapController!.animateCamera(CameraUpdate.newCameraPosition(cameraPosition!));
     });
   }
 }

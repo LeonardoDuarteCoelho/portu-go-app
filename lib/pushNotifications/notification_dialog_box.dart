@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -37,6 +39,7 @@ class _NotificationDialogBoxState extends State<NotificationDialogBox> {
         child: Padding(
           padding: const EdgeInsets.all(AppSpaceValues.space3),
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               Image.asset('images/ic-car-flat.png', width: 100),
 
@@ -173,6 +176,14 @@ class _NotificationDialogBoxState extends State<NotificationDialogBox> {
                       icon: Icons.close,
                       btnContentSize: AppFontSizes.m,
                       onPressed: () {
+                        FirebaseDatabase.instance.ref().child('rideRequests').child(widget.passengerRideRequestInfo!.rideRequestId!).remove().then((value) {
+                          FirebaseDatabase.instance.ref().child('drivers').child(currentFirebaseUser!.uid).child('newRideStatus').set('available');
+                        }).then((value) {
+                          FirebaseDatabase.instance.ref().child('drivers').child(currentFirebaseUser!.uid).child('tripsHistory')
+                          .child(widget.passengerRideRequestInfo!.rideRequestId!);
+                        }).then((value) {
+                          Fluttertoast.showToast(msg: AppStrings.rideRequestCanceledByDriver);
+                        });
                         Navigator.pop(context);
                       }
                   ),

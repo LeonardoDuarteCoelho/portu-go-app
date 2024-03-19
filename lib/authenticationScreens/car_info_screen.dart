@@ -22,12 +22,8 @@ class _CarInfoScreenState extends State<CarInfoScreen> {
   TextEditingController carModelTextEditingController = TextEditingController();
   TextEditingController carNumberTextEditingController = TextEditingController();
   TextEditingController carColorTextEditingController = TextEditingController();
-
-  // Firebase variables:
   late Map carInfoMap;
   late DatabaseReference carInfoRef;
-
-  // Car types for the driver to choose:
   List<String> carTypesList = [
     AppStrings.primeCarType, // For SUVs or minivans; minimum of 6 seats and lots os space for baggage.
     AppStrings.goCarType, // PortuGO's standard ride; 2 to 4 seats and may or may not have a trunk.
@@ -37,6 +33,7 @@ class _CarInfoScreenState extends State<CarInfoScreen> {
     AppStrings.goCarType: AppStrings.carGoExplanation,
   };
   String? selectedCarType;
+  double btnWidth = 300;
 
   showToaster(String string) {
     Fluttertoast.showToast(msg: string);
@@ -198,6 +195,7 @@ class _CarInfoScreenState extends State<CarInfoScreen> {
                   const SizedBox(height: AppSpaceValues.space5),
 
                   CustomButton(
+                      width: btnWidth,
                       text: AppStrings.createAccountButton,
                       onPressed: () {
                         validateForm();

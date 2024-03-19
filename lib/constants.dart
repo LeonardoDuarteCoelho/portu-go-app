@@ -70,13 +70,28 @@ class AppStrings {
 
   // 'ratings_screen.dart'
   static const String ratingsScreenTitle = 'Avaliações';
+  static const String driverNoRatings = 'Sem avaliações';
+  static const String driverRatingOneStar = 'Péssima';
+  static const String driverRatingTwoStar = 'Ruim';
+  static const String driverRatingThreeStar = 'Bom';
+  static const String driverRatingFourStar = 'Ótima';
+  static const String driverRatingFiveStar = 'Excelente';
+  static const String driverAverageRatings = 'Média de avaliação:';
 
   // 'earnings_screen.dart'
   static const String earningsScreenTitle = 'Renda';
+  static const String totalEarnings = 'Renda total:';
+  static const String totalTrips = 'Total de viagens:';
+  static const String pressToKnowMore = '(Aperte para ver mais)';
 
   // 'profile_screen.dart'
   static const String profileScreenTitle = 'Perfil';
   static const String signOut = 'Terminar sessão';
+  static const String aboutUs = 'Sobre nós';
+  static const String darkMode = 'Modo escuro';
+  static const String lightMode = 'Modo claro';
+  static const String darkModeNowOn = 'Modo escuro agora em vigor.';
+  static const String lightModeNowOn = 'Modo claro agora em vigor.';
 
   // 'notification_dialog_box.dart'
   static const String newRequest = 'Novo pedido!';
@@ -85,6 +100,7 @@ class AppStrings {
   static const String acceptRequest = 'Aceitar corrida';
   static const String denyRequest = 'Recusar corrida';
   static const String rideRequestDeletedByPassenger = 'Este pedido de viagem não existe mais.';
+  static const String rideRequestCanceledByDriver = 'Pedido de viagem recusado com sucesso.';
 
   // 'trip_screen.dart'
   static const String passengerLocation = 'Local do passageiro';
@@ -97,6 +113,10 @@ class AppStrings {
   // 'fare_amount_collection_dialog.dart'
   static const String niceEarningText = 'Boa! Ganhaste...';
   static const String collectMoney = 'Coletar dinheiro';
+  static const String moneyEarnedSuccessfully = 'Dinheiro recebido com sucesso!';
+
+  // 'trips_history_screen.dart'
+  static const String tripsHistory = 'Histórico de viagens';
 }
 
 class AppColors {
@@ -115,7 +135,8 @@ class AppColors {
 
   static const Color success3 = Color(0xFF81C784);
   static const Color success5 = Color(0xFF4CAF50);
-  static const Color error = Colors.red;
+  static const Color error = Color(0xFFF44336);
+  static const Color warning = Color(0xFFFBC02D);
 
   // Themed colors:
   static const Color gray0 = Color(0xFFF8F9FA);
