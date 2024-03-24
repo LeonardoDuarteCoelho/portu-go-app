@@ -163,8 +163,15 @@ class _NotificationDialogBoxState extends State<NotificationDialogBox> {
                     icon: Icons.check,
                     btnContentSize: AppFontSizes.m,
                     onPressed: () {
-                      acceptRideRequest(context);
-                    }
+                      FirebaseDatabase.instance.ref().child('rideRequests').child(widget.passengerRideRequestInfo!.rideRequestId!).once().then((snap) {
+                        if (snap.snapshot.value != null) {
+                          acceptRideRequest(context);
+                        } else {
+                          Fluttertoast.showToast(msg: AppStrings.passengerHasCanceledRequest);
+                          Navigator.pop(context);
+                        }
+                      });
+                    },
                   ),
 
                   const SizedBox(height: AppSpaceValues.space3),

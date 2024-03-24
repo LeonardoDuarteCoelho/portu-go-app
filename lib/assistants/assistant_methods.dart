@@ -112,9 +112,7 @@ class AssistantMethods {
     FirebaseDatabase.instance.ref().child('rideRequests').orderByChild('driverId').equalTo(fAuth.currentUser!.uid).once().then((snap) {
       if(snap.snapshot.value != null) {
         Map tripIdKeys = snap.snapshot.value as Map;
-        int tripsCounter = tripIdKeys.length; // How many trips the passenger had.
-        // Counting total number of trips and share it with provider:
-        Provider.of<AppInfo>(context, listen: false).updateTripsCounter(tripsCounter);
+        numberOfTripsToBeDisplayedInHistory = tripIdKeys.length; // Counting total number of trips.
         // Share trip keys with provider:
         List<String> tripKeysList = [];
         tripIdKeys.forEach((key, value) {

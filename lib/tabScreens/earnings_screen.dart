@@ -3,6 +3,8 @@ import 'package:portu_go_driver/constants.dart';
 import 'package:portu_go_driver/mainScreens/trips_history_screen.dart';
 import 'package:provider/provider.dart';
 
+import '../assistants/assistant_methods.dart';
+import '../global/global.dart';
 import '../infoHandler/app_info.dart';
 
 class EarningsScreen extends StatefulWidget {
@@ -13,6 +15,12 @@ class EarningsScreen extends StatefulWidget {
 }
 
 class _EarningsScreenState extends State<EarningsScreen> {
+  @override
+  void initState() {
+    super.initState();
+    AssistantMethods.readTripIdKeys(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -48,6 +56,7 @@ class _EarningsScreenState extends State<EarningsScreen> {
           ),
           GestureDetector(
             onTap: () {
+              AssistantMethods.readTripIdKeys(context);
               Navigator.push(context, MaterialPageRoute(builder: (c) => const TripsHistoryScreen()));
             },
             child: Card(
@@ -76,7 +85,7 @@ class _EarningsScreenState extends State<EarningsScreen> {
                           ),
                         ),
                         Text(
-                          Provider.of<AppInfo>(context, listen: false).tripHistoryInfoList.length.toString(),
+                          numberOfTripsToBeDisplayedInHistory.toString(),
                           textAlign: TextAlign.start,
                           style: const TextStyle(
                             fontWeight: AppFontWeights.light,

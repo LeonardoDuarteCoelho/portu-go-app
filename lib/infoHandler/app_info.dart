@@ -4,7 +4,6 @@ import 'package:portu_go_driver/models/trips_history_model.dart';
 
 class AppInfo extends ChangeNotifier {
   Directions? passengerPickUpLocation, passengerDropOffLocation;
-  int countTotalTrips = 0;
   List<String> historyTripsKeysList = [];
   List<TripsHistoryModel> tripHistoryInfoList = [];
   String driverTotalEarnings = '0';
@@ -17,11 +16,6 @@ class AppInfo extends ChangeNotifier {
 
   void updateDropOffAddress(Directions passengerDropOffAddress) {
     passengerDropOffLocation = passengerDropOffAddress;
-    notifyListeners();
-  }
-
-  void updateTripsCounter(int tripsCounter) {
-    countTotalTrips = tripsCounter;
     notifyListeners();
   }
 

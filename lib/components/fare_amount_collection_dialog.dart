@@ -80,7 +80,7 @@ class _FareAmountCollectionDialogState extends State<FareAmountCollectionDialog>
                 textColor: AppColors.black,
                 onPressed: () {
                   Fluttertoast.showToast(msg: AppStrings.moneyEarnedSuccessfully);
-                  Navigator.push(context, MaterialPageRoute(builder: (c) => const SplashScreen()));
+                  Restart.restartApp();
                 }
               ),
             ],

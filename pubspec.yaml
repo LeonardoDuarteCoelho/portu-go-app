@@ -52,6 +52,14 @@ dependencies:
   intl: ^0.19.0
   smooth_star_rating_nsafe: ^1.0.0+1
   url_launcher: ^6.2.5
+  flutter_launcher_icons: ^0.13.1
+
+flutter_icons:
+  image_path_android: 'images/app-launch-ic-2/playstore.png'
+  image_path_ios: 'images/app-launch-ic-2/appstore.png'
+  android: true
+  ios: true
+
 
 dev_dependencies:
   flutter_test:

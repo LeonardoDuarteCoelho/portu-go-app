@@ -94,8 +94,6 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
     // Updating camera position:
     newGoogleMapController?.animateCamera(CameraUpdate.newCameraPosition(cameraPosition!));
     getHumanReadableAddress();
-    AssistantMethods.readDriverEarnings(context);
-    AssistantMethods.readDriverRatings(context);
   }
 
   readCurrentDriverInfo() async {
@@ -112,7 +110,9 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
         driverData.carModel = (snap.snapshot.value as Map)['carInfo']['carModel'];
         driverData.carNumber = (snap.snapshot.value as Map)['carInfo']['carNumber'];
         driverData.carType = (snap.snapshot.value as Map)['carInfo']['carType'];
-      } else { Fluttertoast.showToast(msg: AppStrings.getDriverDataError); }
+      } else {
+        Fluttertoast.showToast(msg: AppStrings.getDriverDataError);
+      }
     });
     PushNotificationSystem pushNotificationSystem = PushNotificationSystem();
     pushNotificationSystem.initializeCloudMessaging(context);
@@ -124,7 +124,6 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
   @override
   Widget build(BuildContext context) {
     super.build(context);
-
     return Stack(
       children: [
 
@@ -208,9 +207,6 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
     Geofire.setLocation(currentFirebaseUser!.uid, driverCurrentPosition!.latitude, driverCurrentPosition!.longitude);
     driversStatusRef = FirebaseDatabase.instance.ref().child('drivers').child(currentFirebaseUser!.uid).child('newRideStatus');
     driversStatusRef?.set('available'); // Setting driver to be available for ride requests from passengers.
-    driversStatusRef?.onValue.listen((event) {
-
-    });
   }
 
   // This method will be called when the driver re-enters offline mode:

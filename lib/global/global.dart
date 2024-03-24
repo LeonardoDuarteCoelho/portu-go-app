@@ -18,3 +18,4 @@ int maxNumberOfRatingStarts = 5;
 const portuGoWebsiteUrl = 'https://www.figma.com/file/RoybjZ7YVGofmuPIOL3yZi/PortuGO-Layouts?type=design&node-id=0-1&mode=design&t=gbdp1JyJlpgoAWWy-0';
 String driverRatingDescription = '';
 double driverRatingsNumber = 0;
+int numberOfTripsToBeDisplayedInHistory = 0;

@@ -31,13 +31,13 @@ void main() async {
     // Checking if the app is successfully connected to Firebase:
     await Firebase.initializeApp(
       options: const FirebaseOptions(
-          apiKey: 'AIzaSyDGhMovcs7Ov_nrrlefs3PhbnpQVdPvL8Y',
-          appId: '1:455303617152:android:8e3f04b5e3756f51dae465',
-          messagingSenderId: '455303617152',
-          projectId: 'portugo-c7f05',
-          storageBucket: 'portugo-c7f05.appspot.com',
-          databaseURL: 'https://portugo-c7f05-default-rtdb.europe-west1.firebasedatabase.app',
-          // Values located in 'google-services.json'.
+        // Values located in 'google-services.json':
+        apiKey: 'AIzaSyDGhMovcs7Ov_nrrlefs3PhbnpQVdPvL8Y',
+        appId: '1:455303617152:android:8e3f04b5e3756f51dae465',
+        messagingSenderId: '455303617152',
+        projectId: 'portugo-c7f05',
+        storageBucket: 'portugo-c7f05.appspot.com',
+        databaseURL: 'https://portugo-c7f05-default-rtdb.europe-west1.firebasedatabase.app',
       )
     );
   } else {

@@ -215,7 +215,7 @@ class _TripScreenState extends State<TripScreen> {
         markerId: const MarkerId('liveMarkerDuringTripId'),
         position: driverLatitudeAndLongitudeDuringTrip!,
         icon: animatedIconMarker!,
-        infoWindow: const InfoWindow(title: 'Sua posição actual'),
+        infoWindow: const InfoWindow(title: 'Sua posição atual'),
       );
 
       // Animating camera to follow the driver's live location during the trip:

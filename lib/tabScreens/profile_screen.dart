@@ -42,27 +42,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
         break;
       case <= 1:
         setState(() {
-          driverRatingDescription = AppStrings.driverRatingOneStar;
+          driverRatingDescription = '${AppStrings.driverRatingOneStar} ${AppStrings.rating}';
         });
         break;
       case <= 2:
         setState(() {
-          driverRatingDescription = AppStrings.driverRatingTwoStar;
+          driverRatingDescription = '${AppStrings.driverRatingTwoStar} ${AppStrings.rating}';
         });
         break;
       case <= 3:
         setState(() {
-          driverRatingDescription = AppStrings.driverRatingThreeStar;
+          driverRatingDescription = '${AppStrings.driverRatingThreeStar} ${AppStrings.rating}';
         });
         break;
       case <= 4:
         setState(() {
-          driverRatingDescription = AppStrings.driverRatingFourStar;
+          driverRatingDescription = '${AppStrings.driverRatingFourStar} ${AppStrings.rating}';
         });
         break;
       case <= 5:
         setState(() {
-          driverRatingDescription = AppStrings.driverRatingFiveStar;
+          driverRatingDescription = '${AppStrings.driverRatingFiveStar} ${AppStrings.rating}';
         });
         break;
     }
@@ -96,7 +96,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               const SizedBox(height: AppSpaceValues.space3),
 
               InfoDesignUI(
-                textInfo: '$driverRatingDescription avaliação',
+                textInfo: driverRatingDescription,
                 icon: Icons.star,
               ),
               InfoDesignUI(

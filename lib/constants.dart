@@ -86,6 +86,7 @@ class AppStrings {
 
   // 'profile_screen.dart'
   static const String profileScreenTitle = 'Perfil';
+  static const String rating = 'avaliação';
   static const String signOut = 'Terminar sessão';
   static const String aboutUs = 'Sobre nós';
   static const String darkMode = 'Modo escuro';
@@ -101,6 +102,7 @@ class AppStrings {
   static const String denyRequest = 'Recusar corrida';
   static const String rideRequestDeletedByPassenger = 'Este pedido de viagem não existe mais.';
   static const String rideRequestCanceledByDriver = 'Pedido de viagem recusado com sucesso.';
+  static const String passengerHasCanceledRequest = 'O passageiro cancelou o pedido de viagem.';
 
   // 'trip_screen.dart'
   static const String passengerLocation = 'Local do passageiro';
