@@ -1,3 +1,5 @@
+// Global variables available for the entire project:
+
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,12 +11,11 @@ User? currentFirebaseUser;
 StreamSubscription<Position>? streamSubscriptionPositionHomeScreen;
 StreamSubscription<Position>? streamSubscriptionPositionTripScreen;
 bool ifDriverIsActive = false; // Check if driver is on offline mode.
-bool ifDarkThemeIsActive = false;
+bool ifDarkThemeIsActive = false; // Check the app's color theme.
 Position? driverCurrentPosition;
 DriverModel driverData = DriverModel();
 String? driverVehicleType = '';
 int maxNumberOfRatingStarts = 5;
-// TODO: Replace this placeholder URL, which is the one for the Figma project, with the real URL for the website:
 const portuGoWebsiteUrl = 'https://portugo-c7f05.web.app/';
 String driverRatingDescription = '';
 double driverRatingsNumber = 0;

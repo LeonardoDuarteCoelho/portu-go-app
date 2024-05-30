@@ -30,7 +30,7 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
   @override
   void initState() {
     super.initState();
-    tabController = TabController(length: numberOfPages, vsync: this);
+    tabController = TabController(length: numberOfPages, vsync: this); // Initializing bottom navigator.
   }
 
   @override
